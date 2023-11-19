@@ -366,7 +366,7 @@ def task():
                 duedate = request.form.get('duedate')
                 hours = request.form.get('hours')
                 status = request.form.get('status')
-                task_id = mongo.db.tasks.insert({'user_id': user_id,
+                task_id = mongo.db.tasks.insert_one({'user_id': user_id,
                                        'taskname': taskname,
                                        'category': category,
                                        'startdate': startdate,
@@ -380,12 +380,12 @@ def task():
                 tasks_list.append(task_id)
 
                 # Update the user's tasksList field
-                mongo.db.users.update_one(
-                    {'_id': user_id},
-                    {
-                        '$set': {'tasksList': tasks_list}
-                    }
-                )
+                # mongo.db.users.update_one(
+                #     {'_id': user_id},
+                #     {
+                #         '$set': {'tasksList': tasks_list}
+                #     }
+                # )
             flash(f' {form.taskname.data} Task Added!', 'success')
             return redirect(url_for('home'))
     else:
