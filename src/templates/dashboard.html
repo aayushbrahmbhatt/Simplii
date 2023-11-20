@@ -104,6 +104,7 @@
                 <th>Due Date</th>
                 <th>Edit</th>
                 <th>Delete</th>
+                <th>Send Remainders</th>
             </tr>
         </thead>
         <tbody>
@@ -122,6 +123,7 @@
                 <td>{{ item['duedate'] }}</td>
                 <td style="text-align: center;"><button class='editButton'>edit</button></td>
                 <td style="text-align: center;"><button class='deleteButton'>Delete</button></td>
+                <td style="text-align: center;"><button class='reminderButton'>Send Remainder</button></td>
             </tr>
             {% endfor %}
             
