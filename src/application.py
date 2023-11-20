@@ -208,6 +208,42 @@ def recommend():
         return redirect(url_for('home'))
     
 
+@app.route("/kanbanBoard", methods=['GET', 'POST'])
+def kanbanBoard():
+    ############################
+    # kanbanBoard() function opens the task_recommendation.csv file and displays the data of the file
+    # route "/kanbanBoard" will redirect to kanbanBoard() function.
+    # input: The function opens the task_recommendation.csv
+    # Output: Our function will display tasks in a Kanban Board format
+    # ##########################
+    if session.get('user_id'):
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+
+        # Separate tasks based on status
+        todo_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'To-Do'}).sort('duedate', ASCENDING))
+        in_progress_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'In Progress'}).sort('duedate', ASCENDING))
+        done_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'Done'}).sort('duedate', ASCENDING))
+        return render_template('kanbanBoard.html', title='KanbanBoard', todo_tasks=todo_tasks, in_progress_tasks=in_progress_tasks, done_tasks=done_tasks)
+    
+    else:
+        return redirect(url_for('home'))    
+
+# @app.route("/update_task_status")
+# def kanbanBoard():
+#     ############################
+#     # kanbanBoard() function opens the task_recommendation.csv file and displays the data of the file
+#     # route "/kanbanBoard" will redirect to kanbanBoard() function.
+#     # input: The function opens the task_recommendation.csv
+#     # Output: Our function will display tasks in a Kanban Board format
+#     # ##########################
+
+#     if session.get('user_id'):
+#         user_str_id = session.get('user_id')
+#         user_id = ObjectId(user_str_id)
+
+#         return render_template('updated_task_status.html', title='UpdatedTask')
+
 
 
 @app.route("/send_email_reminders", methods=['GET', 'POST'])
