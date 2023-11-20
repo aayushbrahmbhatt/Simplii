@@ -88,13 +88,21 @@
                         </p>
                     {% endif %}
                 </div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+                <div class="form-group">
+                    {{ form.time.label(class="timepicker") }}
+                    {% if form.time.errors %}
+                        {{ form.time(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.time.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.time(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+>>>>>>> main
                 <div class="form-group">
                     {{ form.status.label(class="form-control-label") }}
                     {% if form.status.errors %}
