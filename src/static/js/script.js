@@ -56,6 +56,7 @@ $(document).ready(function(){
         var col2=currentRow.find("td:eq(1)").text(); // get current row 2nd TD
         var col3=currentRow.find("td:eq(2)").text(); // get current row 3rd TD
         console.log(col1);
+        console.log("Clicked set reminder");
         $.ajax({
             type: "GET",
             url: "/scheduleReminder",

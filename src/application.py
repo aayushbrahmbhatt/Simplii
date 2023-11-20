@@ -426,56 +426,6 @@ def scheduleReminder():
     # Output: Out function will redirect to the updateTask page
     # ##########################
     print("Schedule reminder")
-    # if session.get('user_id'):
-    #     print("params in updateTask ", request.url)
-    #     params = request.url.split('?')[1].split('&')
-    #     for i in range(len(params)):
-    #         params[i] = params[i].split('=')
-    #     for i in range(len(params)):
-    #         if "%" in params[i][1]:
-    #             index = params[i][1].index('%')
-    #             params[i][1] = params[i][1][:index] + \
-    #                 " " + params[i][1][index + 3:]
-    #     d = {}
-    #     for i in params:
-    #         d[i[0]] = i[1]
-
-    #     form = UpdateForm()
-
-    #     form.taskname.data = d['taskname']
-    #     form.category.data = d['category']
-    #     form.status.data = d['status']
-    #     form.hours.data = d['hours']
-        
-    #     # Assuming that 'd['startdate']' and 'd['duedate']' are date strings in a format like 'YYYY-MM-DD'
-    #     # Convert them to datetime objects
-    #     startdate_str = d['startdate']
-    #     duedate_str = d['duedate']
-    #     # Convert to datetime objects
-    #     startdate_datetime = datetime.strptime(startdate_str, '%Y-%m-%d')
-    #     duedate_datetime = datetime.strptime(duedate_str, '%Y-%m-%d')
-
-    #     # Now, set the datetime objects in the form
-    #     form.startdate.data = startdate_datetime
-    #     form.duedate.data = duedate_datetime
-        
-
-    #     if form.validate_on_submit():
-    #         if request.method == 'POST':
-    #             user_str_id = session.get('user_id')
-    #             user_id = ObjectId(user_str_id)
-    #             taskname = request.form.get('taskname')
-    #             category = request.form.get('category')
-    #             startdate = request.form.get('startdate')
-    #             duedate = request.form.get('duedate')
-    #             hours = request.form.get('hours')
-    #             status = request.form.get('status')
-    #             mongo.db.tasks.update_one({'user_id': user_id, 'taskname': d['taskname'], 'startdate': d['startdate'], 'duedate': d['duedate']},
-    #                                   {'$set': {'taskname': taskname, 'startdate': startdate, 'duedate': duedate, 'category': category, 'status': status, 'hours': hours}})
-    #         flash(f' {form.taskname.data} Task Updated!', 'success')
-    #         return redirect(url_for('dashboard'))
-    # else:
-    #     return redirect(url_for('home'))
     return render_template('remainder.html')
 
 
