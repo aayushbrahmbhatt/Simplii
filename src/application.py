@@ -468,7 +468,7 @@ def updateTask():
                 duedate = request.form.get('duedate')
                 hours = request.form.get('hours')
                 status = request.form.get('status')
-                mongo.db.tasks.update({'user_id': user_id, 'taskname': d['taskname'], 'startdate': d['startdate'], 'duedate': d['duedate']},
+                mongo.db.tasks.update_one({'user_id': user_id, 'taskname': d['taskname'], 'startdate': d['startdate'], 'duedate': d['duedate']},
                                       {'$set': {'taskname': taskname, 'startdate': startdate, 'duedate': duedate, 'category': category, 'status': status, 'hours': hours}})
             flash(f' {form.taskname.data} Task Updated!', 'success')
             return redirect(url_for('dashboard'))
