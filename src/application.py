@@ -372,7 +372,8 @@ def task():
                                        'startdate': startdate,
                                        'duedate': duedate,
                                        'status': status,
-                                       'hours': hours})
+                                       'hours': hours,
+                                       'scheduler': scheduler})
                 
                 #Now update the user schema's TaskList field with the taskId(Basically append the new task id to that array)
                 user_document = mongo.db.users.find_one({'_id': user_id})
