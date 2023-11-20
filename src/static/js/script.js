@@ -101,3 +101,46 @@ $(document).ready(function(){
         
     });
 });
+
+$(document).ready(function(){
+    // Initialize Sortable.js for each task list
+    new Sortable(document.getElementById('todo-tasks'), {
+        group: 'task-list',
+        onEnd: function (evt) {
+            updateTaskStatus(evt);
+        }
+    });
+
+    new Sortable(document.getElementById('in-progress-tasks'), {
+        group: 'task-list',
+        onEnd: function (evt) {
+            updateTaskStatus(evt);
+        }
+    });
+
+    new Sortable(document.getElementById('done-tasks'), {
+        group: 'task-list',
+        onEnd: function (evt) {
+            updateTaskStatus(evt);
+        }
+    });
+
+    // Function to update task status in the database after drag-and-drop
+    function updateTaskStatus(evt) {
+        var taskId = evt.item.getAttribute('data-task-id');
+        var newListId = evt.to.id;
+
+        // Send AJAX request to update task status in the database
+        $.ajax({
+            url: '/update_task_status',
+            type: 'POST',
+            data: { task_id: taskId, new_status: newListId },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+});
