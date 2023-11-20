@@ -9,3 +9,4 @@ static/tasks/todo/*
 !static/tasks/completed/.completed
 !static/tasks/todo/.todo
 .idea
+.gradle
