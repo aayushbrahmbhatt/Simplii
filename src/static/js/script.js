@@ -56,19 +56,17 @@ $(document).ready(function(){
         var col2=currentRow.find("td:eq(1)").text(); // get current row 2nd TD
         var col3=currentRow.find("td:eq(2)").text(); // get current row 3rd TD
         console.log(col1);
-        console.log("Clicked set reminder");
         $.ajax({
-            type: "GET",
-            url: "/scheduleReminder",
-            // data:{
-            //     "task":col1,
-            //     "status":col2,
-            //     "category":col3
-            // },
-            success: function(response){
-                // resdata = JSON.parse(response)
-                // var url = "/updateTask?taskname=" + resdata.taskname + "&category=" + resdata.category + "&startdate=" + resdata.startdate + "&duedate="+resdata.duedate+"&status="+resdata.status+"&hours="+resdata.hours;
-                // window.location.href = url;
+            type: "POST",
+            url: "/editTask",
+            data:{
+                "task":col1,
+                "status":col2,
+                "category":col3
+            },success: function(response){
+                resdata = JSON.parse(response)
+                var url = "/schedule_reminder?taskname=" + resdata.taskname + "&category=" + resdata.category + "&startdate=" + resdata.startdate + "&duedate="+resdata.duedate+"&status="+resdata.status+"&hours="+resdata.hours;
+                window.location.href = url;
             }
         })
         

@@ -19,7 +19,7 @@ from flask.helpers import make_response
 from flask.json import jsonify
 from flask_mail import Mail, Message
 from pymongo import ASCENDING
-from forms import ForgotPasswordForm, RegistrationForm, LoginForm, ResetPasswordForm, PostingForm, ApplyForm, TaskForm, UpdateForm
+from forms import ForgotPasswordForm, RegistrationForm, LoginForm, ResetPasswordForm, PostingForm, ApplyForm, TaskForm, UpdateForm,ReminderForm
 import bcrypt
 import os
 import csv
@@ -393,6 +393,48 @@ def task():
     return render_template('task.html', title='Task', form=form)
 
 
+@app.route("/schedule_reminder", methods=['GET', 'POST'])
+def scheduleReminder():
+    print("Schedule reminders")
+    ############################
+    # scheduleRemainder() function displays the remainder.html page for updations
+    # route "/scheduleRemainder" will redirect to updateTask() function.
+    # input: The function takes various task values as Input
+    # Output: Out function will redirect to the updateTask page
+    # ##########################
+
+    params = request.url.split('?')[1].split('&')
+    for i in range(len(params)):
+        params[i] = params[i].split('=')
+    for i in range(len(params)):
+        if "%" in params[i][1]:
+            index = params[i][1].index('%')
+            params[i][1] = params[i][1][:index] + \
+                           " " + params[i][1][index + 3:]
+    d = {}
+    for i in params:
+        d[i[0]] = i[1]
+
+    form = ReminderForm()
+    form.taskname.data = d['taskname']
+    form.category.data = d['category']
+    form.status.data = d['status']
+    form.hours.data = d['hours']
+
+    # Assuming that 'd['startdate']' and 'd['duedate']' are date strings in a format like 'YYYY-MM-DD'
+    # Convert them to datetime objects
+    startdate_str = d['startdate']
+    duedate_str = d['duedate']
+    # Convert to datetime objects
+    startdate_datetime = datetime.strptime(startdate_str, '%Y-%m-%d')
+    duedate_datetime = datetime.strptime(duedate_str, '%Y-%m-%d')
+
+    # Now, set the datetime objects in the form
+    form.startdate.data = startdate_datetime
+    form.duedate.data = duedate_datetime
+    return render_template('remainder.html',title='Reminder',form=form)
+
+
 @app.route("/editTask", methods=['GET', 'POST'])
 def editTask():
     ############################
@@ -414,19 +456,6 @@ def editTask():
             'ContentType': 'application/json'}
     else:
         return "Failed"
-    
-
-
-@app.route("/scheduleReminder", methods=['GET', 'POST'])
-def scheduleReminder():
-    ############################
-    # scheduleRemainder() function displays the remainder.html page for updations
-    # route "/scheduleRemainder" will redirect to updateTask() function.
-    # input: The function takes variious task values as Input
-    # Output: Out function will redirect to the updateTask page
-    # ##########################
-    print("Schedule reminder")
-    return render_template('remainder.html')
 
 
 @app.route("/updateTask", methods=['GET', 'POST'])
