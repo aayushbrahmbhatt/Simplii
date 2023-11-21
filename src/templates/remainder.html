@@ -89,21 +89,6 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.time.label(class="timepicker") }}
-                    {% if form.time.errors %}
-                        {{ form.time(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.time.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.time(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-
->>>>>>> main
-                <div class="form-group">
                     {{ form.status.label(class="form-control-label") }}
                     {% if form.status.errors %}
                         <p class="form-control form-control-lg is-invalid">
@@ -119,18 +104,31 @@
                             {{ form.status.data }}
                         </p>
                     {% endif %}
-                </div>                               
+                </div>
                 <div class="form-group">
-                    {{ form.scheduler.label(class="timepicker") }}
-                    {% if form.scheduler.errors %}
-                        {{ form.scheduler(class="form-control form-control-lg is-invalid") }}
+                    {{ form.reminder_date.label(class="form-control-label") }}
+                    {% if form.reminder_date.errors %}
+                        form.reminder_date(class="form-control form-control-lg")
                         <div class="invalid-feedback">
-                            {% for error in form.scheduler.errors %}
+                            {% for error in form.reminder_date.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.scheduler(class="form-control form-control-lg") }}
+                        {{ form.reminder_date(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.reminderTime.label(class="timepicker") }}
+                    {% if form.reminderTime.errors %}
+                        {{ form.reminderTime(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.reminderTime.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.reminderTime(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
             </fieldset>

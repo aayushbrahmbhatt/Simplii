@@ -353,7 +353,7 @@ def task():
     # Input: Task, Category, start date, end date, number of hours
     # Output: Value update in database and redirected to home login page
     # ##########################
-    if session.get('user_id'): 
+    if session.get('user_id'):
         form = TaskForm()
         if form.validate_on_submit():
             print("inside form")
@@ -374,7 +374,7 @@ def task():
                                        'status': status,
                                        'hours': hours,
                                        'scheduler': scheduler})
-                
+
                 #Now update the user schema's TaskList field with the taskId(Basically append the new task id to that array)
                 user_document = mongo.db.users.find_one({'_id': user_id})
                 tasks_list = user_document.get('tasksList', [])
@@ -421,18 +421,49 @@ def scheduleReminder():
     form.category.data = d['category']
     form.status.data = d['status']
     form.hours.data = d['hours']
-
+    form.startdate.data = d['startdate']
+    form.duedate.data = d['duedate']
     # Assuming that 'd['startdate']' and 'd['duedate']' are date strings in a format like 'YYYY-MM-DD'
     # Convert them to datetime objects
-    startdate_str = d['startdate']
-    duedate_str = d['duedate']
-    # Convert to datetime objects
-    startdate_datetime = datetime.strptime(startdate_str, '%Y-%m-%d')
-    duedate_datetime = datetime.strptime(duedate_str, '%Y-%m-%d')
+    if request.method == 'POST':
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+        task_str_id = request.form.get('task_id')  # assuming 'task_id' is part of the form data
+        task_id = ObjectId(task_str_id)
+        taskname = request.form.get('taskname')
+        startdate = request.form.get('startdate')
+        duedate = request.form.get('duedate')
+        category = request.form.get('category')
+        reminder_date_str = request.form.get('reminder_date')
+        print("reminder date",reminder_date_str)
+        # Convert to datetime objects
+        reminder_date_datetime = datetime.strptime(reminder_date_str, '%Y-%m-%d')
 
+        # Insert a new document into the "reminderScheduler" collection
+        reminderScheduler_id = mongo.db.reminderScheduler.insert_one({
+            'user_id': user_id,
+            'task_id': task_id,
+            'taskname': taskname,
+            'category': category,
+            'startdate':startdate,
+            'duedate':duedate,
+            'reminder_date': reminder_date_datetime,
+        })
+
+        # Now, update the user schema's TaskList field with the taskId
+        # (Assuming there is a field called 'tasksList' in the user schema)
+        mongo.db.users.update_one(
+            {'_id': user_id},
+            {'$addToSet': {'tasksList': reminderScheduler_id.inserted_id}}
+        )
+
+        # Set the datetime objects in the form
+        # return render_template('remainder.html', title='Reminder', form=form)
+        flash(f'Reminder Scheduled!', 'success')
+        return redirect(url_for('home'))
+    # else:
+    #     return render_template('remainder.html',title='Reminder',form=form)
     # Now, set the datetime objects in the form
-    form.startdate.data = startdate_datetime
-    form.duedate.data = duedate_datetime
     return render_template('remainder.html',title='Reminder',form=form)
 
 
