@@ -229,25 +229,29 @@ def kanbanBoard():
     else:
         return redirect(url_for('home'))    
 
-# @app.route("/update_task_status", methods=['GET', 'POST'])
-# def updateTaskStatus():
-#     ############################
-#     # updateTaskStatus() function helps the user to edit a particular task and update in database.
-#     # route "/editTask" will redirect to editTask() function.
-#     # input: The function takes status as the input.
-#     # Output: Our function will update these values in the database..
-#     # ##########################
-#     if request.method == 'POST':
-#         user_str_id = session.get('user_id')
-#         user_id = ObjectId(user_str_id)
-#         status = request.form.get('status')
-#         id = mongo.db.tasks.find_one(
-#             {'user_id': user_id, 'status': status,})
-#         print("id in edit task ", id)
-#         return json.dumps({'taskname': id['taskname'], 'category': id['category'], 'startdate': id['startdate'], 'duedate': id['duedate'], 'status': id['status'], 'hours': id['hours']}), 200, {
-#             'ContentType': 'application/json'}
-#     else:
-#         return "Failed"
+@app.route("/update_task_status", methods=['POST'])
+def update_task_status():
+    try:
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+        task_id = request.form.get('task')
+        new_status = request.form.get('status')
+
+        # Your MongoDB update query here
+        # Make sure to replace 'user_id' and 'taskname' with your actual field names
+        update_result = mongo.db.tasks.update_one(
+            {'user_id': user_id, 'taskname': task_id},
+            {'$set': {'status': new_status}}
+        )
+
+        if update_result.modified_count > 0:
+            flash(f'Task Updated!', 'success')
+            return jsonify({'task': task_id, 'status': new_status})
+        else:
+            return jsonify({'error': 'Failed to update task status'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 @app.route("/send_email_reminders", methods=['GET', 'POST'])
