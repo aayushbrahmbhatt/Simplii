@@ -215,6 +215,7 @@ def kanbanBoard():
     # route "/kanbanBoard" will redirect to kanbanBoard() function.
     # input: The function opens the task_recommendation.csv
     # Output: Our function will display tasks in a Kanban Board format
+    # Output: Our function will display tasks in a Kanban Board format
     # ##########################
     if session.get('user_id'):
         user_str_id = session.get('user_id')
@@ -225,25 +226,33 @@ def kanbanBoard():
         in_progress_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'In Progress'}).sort('duedate', ASCENDING))
         done_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'Done'}).sort('duedate', ASCENDING))
         return render_template('kanbanBoard.html', title='KanbanBoard', todo_tasks=todo_tasks, in_progress_tasks=in_progress_tasks, done_tasks=done_tasks)
-    
+
     else:
-        return redirect(url_for('home'))    
+        return redirect(url_for('home'))
 
-# @app.route("/update_task_status")
-# def kanbanBoard():
-#     ############################
-#     # kanbanBoard() function opens the task_recommendation.csv file and displays the data of the file
-#     # route "/kanbanBoard" will redirect to kanbanBoard() function.
-#     # input: The function opens the task_recommendation.csv
-#     # Output: Our function will display tasks in a Kanban Board format
-#     # ##########################
+@app.route("/update_task_status", methods=['POST'])
+def update_task_status():
+    try:
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+        task_id = request.form.get('task')
+        new_status = request.form.get('status')
 
-#     if session.get('user_id'):
-#         user_str_id = session.get('user_id')
-#         user_id = ObjectId(user_str_id)
+        # Your MongoDB update query here
+        # Make sure to replace 'user_id' and 'taskname' with your actual field names
+        update_result = mongo.db.tasks.update_one(
+            {'user_id': user_id, 'taskname': task_id},
+            {'$set': {'status': new_status}}
+        )
 
-#         return render_template('updated_task_status.html', title='UpdatedTask')
+        if update_result.modified_count > 0:
+            flash(f'Task Updated!', 'success')
+            return jsonify({'task': task_id, 'status': new_status})
+        else:
+            return jsonify({'error': 'Failed to update task status'})
 
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 @app.route("/send_email_reminders", methods=['GET', 'POST'])
@@ -297,8 +306,6 @@ def send_email_reminders():
         return redirect(url_for('home'))
 
 
-
-
 @app.route("/dashboard")
 def dashboard():
     ############################
@@ -313,6 +320,7 @@ def dashboard():
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
     return render_template('dashboard.html', tasks=tasks)
 
+
 @app.route("/about")
 def about():
     # ############################
@@ -321,6 +329,18 @@ def about():
     # ##########################
     return render_template('about.html', title='About')
 
+@app.route("/reminderscheduled")
+def reminderscheduled():
+    if session.get('user_id'):
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+
+        reminderScheduler = list(mongo.db.reminderScheduler.find({'user_id':user_id}).sort('reminder_date', ASCENDING))
+        # print("reminder scheduled ",reminderScheduler)
+        return render_template('remindersScheduled.html', title='reminderScheduler', reminderScheduler=reminderScheduler)
+
+    else:
+        return redirect(url_for('home'))
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -389,7 +409,7 @@ def task():
     # Input: Task, Category, start date, end date, number of hours
     # Output: Value update in database and redirected to home login page
     # ##########################
-    if session.get('user_id'): 
+    if session.get('user_id'):
         form = TaskForm()
         if form.validate_on_submit():
             print("inside form")
@@ -408,8 +428,9 @@ def task():
                                        'startdate': startdate,
                                        'duedate': duedate,
                                        'status': status,
-                                       'hours': hours})
-                
+                                       'hours': hours,
+                                       'scheduler': scheduler})
+
                 #Now update the user schema's TaskList field with the taskId(Basically append the new task id to that array)
                 user_document = mongo.db.users.find_one({'_id': user_id})
                 tasks_list = user_document.get('tasksList', [])
@@ -456,18 +477,44 @@ def scheduleReminder():
     form.category.data = d['category']
     form.status.data = d['status']
     form.hours.data = d['hours']
+    form.startdate.data = d['startdate']
+    form.duedate.data = d['duedate']
 
-    # Assuming that 'd['startdate']' and 'd['duedate']' are date strings in a format like 'YYYY-MM-DD'
-    # Convert them to datetime objects
-    startdate_str = d['startdate']
-    duedate_str = d['duedate']
-    # Convert to datetime objects
-    startdate_datetime = datetime.strptime(startdate_str, '%Y-%m-%d')
-    duedate_datetime = datetime.strptime(duedate_str, '%Y-%m-%d')
+    if request.method == 'POST':
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+        task_str_id = request.form.get('task_id')  # assuming 'task_id' is part of the form data
+        task_id = ObjectId(task_str_id)
+        taskname = form.taskname.data
+        startdate = form.startdate.data
+        duedate = form.duedate.data
+        category = form.category.data
+        reminder_date_str = request.form.get('reminder_date')
+        reminder_time_str = request.form.get('reminderTime')
 
-    # Now, set the datetime objects in the form
-    form.startdate.data = startdate_datetime
-    form.duedate.data = duedate_datetime
+        # Convert to datetime objects
+        reminder_date_str = datetime.strptime(reminder_date_str + ' ' + reminder_time_str, '%Y-%m-%d %H:%M')
+
+        # Insert a new document into the "reminderScheduler" collection
+        reminderScheduler_id = mongo.db.reminderScheduler.insert_one({
+            'user_id': user_id,
+            'task_id': task_id,
+            'taskname': taskname,
+            'category': category,
+            'startdate':startdate,
+            'duedate':duedate,
+            'reminder_date': reminder_date_str,
+            'reminder_time': reminder_time_str,
+        })
+
+        # Now, update the user schema's TaskList field
+        mongo.db.users.update_one(
+            {'_id': user_id},
+            {'$addToSet': {'tasksList': reminderScheduler_id.inserted_id}}
+        )
+
+        flash(f'Reminder Scheduled!', 'success')
+        return redirect(url_for('home'))
     return render_template('remainder.html',title='Reminder',form=form)
 
 

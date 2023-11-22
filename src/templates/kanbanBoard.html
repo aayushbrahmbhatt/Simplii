@@ -48,9 +48,9 @@
                 <div class="col-sm-4">
                     <div class="task-list" id="todo-list">
                         <h2>To-Do</h2>
-                        <ul class="list-group" id="todo-tasks">
+                        <ul class="list-group" id="To-Do">
                             {% for task in todo_tasks %}
-                                <li class="list-group-item task-item" data-task-id="{{ task._id }}">{{ task.taskname }}</li>
+                                <li class="list-group-item task-item" data-task-id="{{ task.taskname }}">{{ task.taskname }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -60,9 +60,9 @@
                 <div class="col-sm-4">
                     <div class="task-list" id="in-progress-list">
                         <h2>In-Progress</h2>
-                        <ul class="list-group" id="in-progress-tasks">
+                        <ul class="list-group" id="In Progress">
                             {% for task in in_progress_tasks %}
-                                <li class="list-group-item task-item" data-task-id="{{ task._id }}">{{ task.taskname }}</li>
+                                <li class="list-group-item task-item" data-task-id="{{ task.taskname }}">{{ task.taskname }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -72,9 +72,9 @@
                 <div class="col-sm-4">
                     <div class="task-list" id="done-list">
                         <h2>Done</h2>
-                        <ul class="list-group" id="done-tasks">
+                        <ul class="list-group" id="Done">
                             {% for task in done_tasks %}
-                                <li class="list-group-item task-item" data-task-id="{{ task._id }}">{{ task.taskname }}</li>
+                                <li class="list-group-item task-item" data-task-id="{{ task.taskname }}">{{ task.taskname }}</li>
                             {% endfor %}
                         </ul>
                     </div>
