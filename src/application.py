@@ -229,21 +229,25 @@ def kanbanBoard():
     else:
         return redirect(url_for('home'))    
 
-# @app.route("/update_task_status")
-# def kanbanBoard():
+# @app.route("/update_task_status", methods=['GET', 'POST'])
+# def updateTaskStatus():
 #     ############################
-#     # kanbanBoard() function opens the task_recommendation.csv file and displays the data of the file
-#     # route "/kanbanBoard" will redirect to kanbanBoard() function.
-#     # input: The function opens the task_recommendation.csv
-#     # Output: Our function will display tasks in a Kanban Board format
+#     # updateTaskStatus() function helps the user to edit a particular task and update in database.
+#     # route "/editTask" will redirect to editTask() function.
+#     # input: The function takes status as the input.
+#     # Output: Our function will update these values in the database..
 #     # ##########################
-
-#     if session.get('user_id'):
+#     if request.method == 'POST':
 #         user_str_id = session.get('user_id')
 #         user_id = ObjectId(user_str_id)
-
-#         return render_template('updated_task_status.html', title='UpdatedTask')
-
+#         status = request.form.get('status')
+#         id = mongo.db.tasks.find_one(
+#             {'user_id': user_id, 'status': status,})
+#         print("id in edit task ", id)
+#         return json.dumps({'taskname': id['taskname'], 'category': id['category'], 'startdate': id['startdate'], 'duedate': id['duedate'], 'status': id['status'], 'hours': id['hours']}), 200, {
+#             'ContentType': 'application/json'}
+#     else:
+#         return "Failed"
 
 
 @app.route("/send_email_reminders", methods=['GET', 'POST'])
@@ -297,8 +301,6 @@ def send_email_reminders():
         return redirect(url_for('home'))
 
 
-
-
 @app.route("/dashboard")
 def dashboard():
     ############################
@@ -312,6 +314,7 @@ def dashboard():
     if session.get('user_id'):
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
     return render_template('dashboard.html', tasks=tasks)
+
 
 @app.route("/about")
 def about():

@@ -129,7 +129,7 @@ $(document).ready(function(){
     function updateTaskStatus(evt) {
         var taskId = evt.item.getAttribute('data-task-id');
         var newListId = evt.to.id;
-
+        console.log(taskId, newListId);
         // Send AJAX request to update task status in the database
         $.ajax({
             url: '/update_task_status',
