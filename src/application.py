@@ -215,6 +215,7 @@ def kanbanBoard():
     # route "/kanbanBoard" will redirect to kanbanBoard() function.
     # input: The function opens the task_recommendation.csv
     # Output: Our function will display tasks in a Kanban Board format
+    # Output: Our function will display tasks in a Kanban Board format
     # ##########################
     if session.get('user_id'):
         user_str_id = session.get('user_id')
@@ -225,9 +226,9 @@ def kanbanBoard():
         in_progress_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'In Progress'}).sort('duedate', ASCENDING))
         done_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'Done'}).sort('duedate', ASCENDING))
         return render_template('kanbanBoard.html', title='KanbanBoard', todo_tasks=todo_tasks, in_progress_tasks=in_progress_tasks, done_tasks=done_tasks)
-    
+
     else:
-        return redirect(url_for('home'))    
+        return redirect(url_for('home'))
 
 @app.route("/update_task_status", methods=['POST'])
 def update_task_status():
@@ -328,6 +329,18 @@ def about():
     # ##########################
     return render_template('about.html', title='About')
 
+@app.route("/reminderscheduled")
+def reminderscheduled():
+    if session.get('user_id'):
+        user_str_id = session.get('user_id')
+        user_id = ObjectId(user_str_id)
+
+        reminderScheduler = list(mongo.db.reminderScheduler.find({'user_id':user_id}).sort('reminder_date', ASCENDING))
+        # print("reminder scheduled ",reminderScheduler)
+        return render_template('remindersScheduled.html', title='reminderScheduler', reminderScheduler=reminderScheduler)
+
+    else:
+        return redirect(url_for('home'))
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -466,21 +479,21 @@ def scheduleReminder():
     form.hours.data = d['hours']
     form.startdate.data = d['startdate']
     form.duedate.data = d['duedate']
-    # Assuming that 'd['startdate']' and 'd['duedate']' are date strings in a format like 'YYYY-MM-DD'
-    # Convert them to datetime objects
+
     if request.method == 'POST':
         user_str_id = session.get('user_id')
         user_id = ObjectId(user_str_id)
         task_str_id = request.form.get('task_id')  # assuming 'task_id' is part of the form data
         task_id = ObjectId(task_str_id)
-        taskname = request.form.get('taskname')
-        startdate = request.form.get('startdate')
-        duedate = request.form.get('duedate')
-        category = request.form.get('category')
+        taskname = form.taskname.data
+        startdate = form.startdate.data
+        duedate = form.duedate.data
+        category = form.category.data
         reminder_date_str = request.form.get('reminder_date')
-        print("reminder date",reminder_date_str)
+        reminder_time_str = request.form.get('reminderTime')
+
         # Convert to datetime objects
-        reminder_date_datetime = datetime.strptime(reminder_date_str, '%Y-%m-%d')
+        reminder_date_str = datetime.strptime(reminder_date_str + ' ' + reminder_time_str, '%Y-%m-%d %H:%M')
 
         # Insert a new document into the "reminderScheduler" collection
         reminderScheduler_id = mongo.db.reminderScheduler.insert_one({
@@ -490,23 +503,18 @@ def scheduleReminder():
             'category': category,
             'startdate':startdate,
             'duedate':duedate,
-            'reminder_date': reminder_date_datetime,
+            'reminder_date': reminder_date_str,
+            'reminder_time': reminder_time_str,
         })
 
-        # Now, update the user schema's TaskList field with the taskId
-        # (Assuming there is a field called 'tasksList' in the user schema)
+        # Now, update the user schema's TaskList field
         mongo.db.users.update_one(
             {'_id': user_id},
             {'$addToSet': {'tasksList': reminderScheduler_id.inserted_id}}
         )
 
-        # Set the datetime objects in the form
-        # return render_template('remainder.html', title='Reminder', form=form)
         flash(f'Reminder Scheduled!', 'success')
         return redirect(url_for('home'))
-    # else:
-    #     return render_template('remainder.html',title='Reminder',form=form)
-    # Now, set the datetime objects in the form
     return render_template('remainder.html',title='Reminder',form=form)
 
 
