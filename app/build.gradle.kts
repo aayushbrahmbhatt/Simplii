@@ -5,12 +5,16 @@ plugins {
 
 android {
     namespace = "com.bytes.a.half.simplii_android"
-    compileSdk = 33
+    compileSdk = 34
+
+    buildFeatures {
+        compose = true
+    }
 
     defaultConfig {
         applicationId = "com.bytes.a.half.simplii_android"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -32,6 +36,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion =  "1.5.4"
     }
 }
 
@@ -73,4 +81,5 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     // Optional - Add window size utils
     implementation("androidx.compose.material3:material3-window-size-class")
+    implementation ("com.chargemap.compose:numberpicker:1.0.3")
 }
