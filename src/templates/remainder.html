@@ -1,140 +1,93 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Schedule Remainder</legend>
-                <!-- <div class="form-group">
-                    {{ form.taskname.label(class="form-control-label") }}
 
-                    {% if form.taskname.errors %}
-                        {{ form.taskname(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.taskname.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.taskname(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div> -->
-                <div class="form-group">
-                    {{ form.taskname.label(class="form-control-label") }}
-                
-                    {% if form.taskname.errors %}
-                        <p class="form-control form-control-lg is-invalid">
-                            {{ form.taskname.data }}
-                        </p>
-                        <div class="invalid-feedback">
-                            {% for error in form.taskname.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="form-control form-control-lg">
-                            {{ form.taskname.data }}
-                        </p>
-                    {% endif %}
-                </div>                
-                <div class="form-group">
-                    {{ form.category.label(class="form-control-label") }}                
-                    {% if form.category.errors %}
-                        <p class="form-control form-control-lg is-invalid">
-                            {{ form.category.data }}
-                        </p>
-                        <div class="invalid-feedback">
-                            {% for error in form.category.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="form-control form-control-lg">
-                            {{ form.category.data }}
-                        </p>
-                    {% endif %}
-                </div>                
-                <div class="form-group">
-                    {{ form.startdate.label(class="form-control-label") }}                
-                    {% if form.startdate.errors %}
-                        <p class="form-control form-control-lg is-invalid">
-                            {{ form.startdate.data }}
-                        </p>
-                        <div class="invalid-feedback">
-                            {% for error in form.startdate.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="form-control form-control-lg">
-                            {{ form.startdate.data }}
-                        </p>
-                    {% endif %}
-                </div>                
-                <div class="form-group">
-                    {{ form.duedate.label(class="form-control-label") }}                
-                    {% if form.duedate.errors %}
-                        <p class="form-control form-control-lg is-invalid">
-                            {{ form.duedate.data }}
-                        </p>
-                        <div class="invalid-feedback">
-                            {% for error in form.duedate.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="form-control form-control-lg">
-                            {{ form.duedate.data }}
-                        </p>
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.status.label(class="form-control-label") }}
-                    {% if form.status.errors %}
-                        <p class="form-control form-control-lg is-invalid">
-                            {{ form.status.data }}
-                        </p>
-                        <div class="invalid-feedback">
-                            {% for error in form.status.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <p class="form-control form-control-lg">
-                            {{ form.status.data }}
-                        </p>
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.reminder_date.label(class="form-control-label") }}
-                    {% if form.reminder_date.errors %}
+<style>
+    .content-section {
+        padding-top: 3em;
+        background-color: rgb(190, 255, 252);
+    }
+
+    .tasks-list {
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .task-info {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .task-info li {
+        margin-bottom: 10px;
+        padding-bottom: 1em;
+        text-align: center;
+        justify-items: center;
+    }
+
+    .form-rows {
+        padding-top: 3px;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+</style>
+
+<div class="content-section">
+
+    {{ form.hidden_tag() }}
+    <h4>Add a reminder for...</h4>
+
+    <div class="tasks-list">
+        <ul class="task-info">
+            <li><strong>Task name: &nbsp;</strong> {{ form.taskname.data }}</li>
+            <li><strong>Category: &nbsp;</strong> {{ form.category.data }}</li>
+            <li><strong>Start Date: &nbsp;</strong> {{ form.startdate.data }}</li>
+            <li><strong>Due Date: &nbsp;</strong> {{ form.duedate.data }}</li>
+            <li><strong>Status: &nbsp;</strong> {{ form.status.data }}</li>
+        </ul>
+    </div>
+
+    <form method="POST" action="">
+        <fieldset class="form-group">
+            <div class="row form-rows">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <b> {{ form.reminder_date.label(class="form-control-label") }} </b>
+                        {% if form.reminder_date.errors %}
                         form.reminder_date(class="form-control form-control-lg")
                         <div class="invalid-feedback">
                             {% for error in form.reminder_date.errors %}
-                                <span>{{ error }}</span>
+                            <span>{{ error }}</span>
                             {% endfor %}
                         </div>
-                    {% else %}
+                        {% else %}
                         {{ form.reminder_date(class="form-control form-control-lg") }}
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="form-group">
-                    {{ form.reminderTime.label(class="timepicker") }}
-                    {% if form.reminderTime.errors %}
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <b>{{ form.reminderTime.label(class="timepicker") }}</b>
+                        {% if form.reminderTime.errors %}
                         {{ form.reminderTime(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.reminderTime.errors %}
-                                <span>{{ error }}</span>
+                            <span>{{ error }}</span>
                             {% endfor %}
                         </div>
-                    {% else %}
+                        {% else %}
                         {{ form.reminderTime(class="form-control form-control-lg") }}
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
             </div>
-        </form>
-    </div>
+        </fieldset>
+        <div class="form-group " style="text-align: center;">
+            {{ form.submit(class="btn btn-info") }}
+        </div>
+    </form>
+</div>
 {% endblock content %}
