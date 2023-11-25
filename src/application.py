@@ -27,6 +27,8 @@ import sys
 
 from flask_login import LoginManager, login_required
 
+from firebase_config import auth
+
 app = Flask(__name__)
 app.secret_key = 'secret'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/simplii'
@@ -360,6 +362,7 @@ def register():
                 password = request.form.get('password')
                 mongo.db.users.insert_one({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
                     password.encode("utf-8"), bcrypt.gensalt()), 'tasksList':[], 'temp': None})
+                auth.create_user_with_email_and_password(email, password)
                 msg = Message('Welcome to Simplii: Your Task Scheduling Companion', sender='dummysinghhh@gmail.com', recipients=[email])
                 msg.body = f"Hey {username},\n\n" \
                 "We're excited to welcome you to Simplii, your new task scheduling companion. Simplii is here to help you stay organized, meet deadlines, and achieve your goals efficiently.\n\n" \
@@ -614,19 +617,18 @@ def login():
     if not session.get('user_id'):
         form = LoginForm()
         if form.validate_on_submit():
-            temp = mongo.db.users.find_one({'email': form.email.data}, {
-                'email', 'name', 'pwd'})
-            print("temp ", temp)
-            if temp is not None and temp['email'] == form.email.data and (
-                bcrypt.checkpw(
-                    form.password.data.encode("utf-8"),
-                    temp['pwd'])): #or temp['temp'] == form.password.data
+            email = form.email.data
+            password = form.password.data
+            try:
+                user = auth.sign_in_with_email_and_password(email, password)
+                temp = mongo.db.users.find_one({'email': form.email.data}, {
+                    'email', 'name', 'pwd'})
                 flash('You have been logged in!', 'success')
                 session['email'] = temp['email']
                 session['name'] = temp['name']
                 session['user_id'] = str(temp['_id'])
                 return redirect(url_for('dashboard'))
-            else:
+            except:
                 flash(
                     'Login Unsuccessful. Please check username and password',
                     'danger')
