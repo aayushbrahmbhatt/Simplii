@@ -64,39 +64,6 @@
                     }
                 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
-        // function SearchData(Show, Status, Category, data) {
-        //     var filteredData = data;
-
-        //     if (Status.toUpperCase() != 'ALL') {
-        //         filteredData = filteredData.filter(function (row) {
-        //             return row[1].toUpperCase() == Status.toUpperCase();
-        //         });
-        //     }
-
-        //     if (Category.toUpperCase() != 'ALL') {
-        //         filteredData = filteredData.filter(function (row) {
-        //             return row[2] == Category;
-        //         });
-        //     }
-
-        //     $('#myTable tbody').empty();
-
-        //     if (Show.toUpperCase() == 'ALL') {
-        //         Show = filteredData.length;
-        //     }
-
-        //     for (var i = 0; i < Show; i++) {
-        //         var row = $('<tr>');
-        //         filteredData[i].forEach(function (cellData) {
-        //             row.append($('<td>').text(cellData));
-        //         });
-        //         $('#myTable tbody').append(row);
-        //     }
-        // }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 </script>
     
 <table data-toggle="table" data-flat="true" data-search="true" id="myTable" class="paginated table table-striped table-hover">
@@ -105,18 +72,6 @@
             </div>
                 <div class="table-filter">
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="filter-group">
-                                <label>Task display limit</label>
-                                <select class="cl_show form-control" id="ddlShow">
-                                    <option value="all">Select limit</option>
-                                    <option value="3">3</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                </select>
-                            </div>
-                            <span class="filter-icon"><i class="fa fa-filter"></i></span>
-                        </div>
                     
                         <div class="col-sm-4">
                             <div class="filter-group">
@@ -142,6 +97,20 @@
                             </div>
                             <span class="filter-icon"><i class="fa fa-filter"></i></span>
                         </div>
+
+                        <div class="col-sm-4">
+                            <div class="filter-group">
+                                <label>Task display limit</label>
+                                <select class="cl_show form-control" id="ddlShow">
+                                    <option value="all">Select limit</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <span class="filter-icon"><i class="fa fa-filter"></i></span>
+                        </div>
+                        
                     </div>
                 </div>    
         </div>
@@ -172,9 +141,9 @@
                 <td>{{ item['category'] }}</td>
                 <td>{{ item['startdate'] }}</td>
                 <td>{{ item['duedate'] }}</td>
-                <td style="text-align: center;"><button class='editButton'>edit</button></td>
+                <td style="text-align: center;"><button class='editButton'>Edit</button></td>
                 <td style="text-align: center;"><button class='deleteButton'>Delete</button></td>
-                <td style="text-align: center;"><button class='reminderButton'>Send Remainder</button></td>
+                <td style="text-align: center;"><button class='reminderButton'>Send Reminder</button></td>
             </tr>
             {% endfor %}
             
