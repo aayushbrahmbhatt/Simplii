@@ -428,8 +428,7 @@ def task():
                                        'startdate': startdate,
                                        'duedate': duedate,
                                        'status': status,
-                                       'hours': hours,
-                                       'scheduler': scheduler})
+                                       'hours': hours})
 
                 #Now update the user schema's TaskList field with the taskId(Basically append the new task id to that array)
                 user_document = mongo.db.users.find_one({'_id': user_id})
@@ -489,11 +488,11 @@ def scheduleReminder():
         startdate = form.startdate.data
         duedate = form.duedate.data
         category = form.category.data
-        reminder_date_str = request.form.get('reminder_date')
+        reminder_date = request.form.get('reminder_date')
         reminder_time_str = request.form.get('reminderTime')
 
         # Convert to datetime objects
-        reminder_date_str = datetime.strptime(reminder_date_str + ' ' + reminder_time_str, '%Y-%m-%d %H:%M')
+        reminder_date_str = datetime.strptime(reminder_date + ' ' + reminder_time_str, '%Y-%m-%d %H:%M')
 
         # Insert a new document into the "reminderScheduler" collection
         reminderScheduler_id = mongo.db.reminderScheduler.insert_one({
@@ -512,6 +511,46 @@ def scheduleReminder():
             {'_id': user_id},
             {'$addToSet': {'tasksList': reminderScheduler_id.inserted_id}}
         )
+
+        # reminder_date = datetime.strptime(reminder_date_str, '%Y-%m-%d %H:%M')
+
+        # relevant_reminders = list(mongo.db.reminderScheduler.find({
+        #     'user_id': user_id,
+        #     'reminder_date': {'$lt': reminder_date_str}
+        # }).sort('reminder_date', 1))
+
+        # due_date = datetime.strptime(due_date, '%Y-%m-%d').date()
+        #
+        # # Fetch tasks whose due date falls within the specified range
+        # relevant_tasks = mongo.db.tasks.find({
+        #     'user_id': user_id,
+        #     'duedate': {'$lt': due_date.strftime('%Y-%m-%d')}  # Convert due_date back to string for comparison
+        # }).sort('duedate', 1)
+
+        # Convert the cursor to a list of dictionaries
+        # relevant_reminders = list(relevant_reminders)
+        # print("relevant reminders ",relevant_reminders)
+
+        # Create an HTML table from the reminder data
+        reminder_table_html = ("<table border='1'>"
+                               "<tr>"  "<th>Task Name</th>"
+                                       "<th>Category</th>"
+                                       "<th>Start Date</th>"
+                                       "<th>Due Date</th></tr>")
+
+        # for reminder in relevant_reminders:
+        # reminder_table_html += f"<tr><td>{reminder['taskname']}</td><td>{reminder['category']}</td><td>{reminder['startdate']}</td><td>{reminder['duedate']}</tr>"
+
+        reminder_table_html += "</table>"
+
+        # Compose the reminder email
+        email = session.get('email')
+        msg = Message('Reminder: Upcoming Task', sender='simplii@gmail.com', recipients=[email])
+        msg.extra_headers = {'X-SMTPAPI': json.dumps({'send_at': reminder_date})}
+        # Create the HTML version of the email with the reminder table
+        reminder_email_body = f"Here are your upcoming reminders:\n\n{reminder_table_html}"
+        msg.html = reminder_email_body
+        mail.send(msg)
 
         flash(f'Reminder Scheduled!', 'success')
         return redirect(url_for('home'))
