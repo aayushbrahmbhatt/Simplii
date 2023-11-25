@@ -195,5 +195,6 @@ class ReminderForm(FlaskForm):
     )
     hours = StringField('Hours Required',
                         validators=[DataRequired(), Length(min=1, max=20)])
-    time = TimeField('Time')
+    reminder_date = DateField('Reminder date', format='%Y-%m-%d')
+    reminderTime = TimeField('Reminder Time')
     submit = SubmitField('Set Reminder')

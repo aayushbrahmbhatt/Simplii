@@ -5,7 +5,7 @@
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Schedule Remainder</legend>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     {{ form.taskname.label(class="form-control-label") }}
 
                     {% if form.taskname.errors %}
@@ -18,86 +18,117 @@
                     {% else %}
                         {{ form.taskname(class="form-control form-control-lg") }}
                     {% endif %}
-                </div>
+                </div> -->
                 <div class="form-group">
-                    {{ form.category.label(class="form-control-label") }}
+                    {{ form.taskname.label(class="form-control-label") }}
+                
+                    {% if form.taskname.errors %}
+                        <p class="form-control form-control-lg is-invalid">
+                            {{ form.taskname.data }}
+                        </p>
+                        <div class="invalid-feedback">
+                            {% for error in form.taskname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="form-control form-control-lg">
+                            {{ form.taskname.data }}
+                        </p>
+                    {% endif %}
+                </div>                
+                <div class="form-group">
+                    {{ form.category.label(class="form-control-label") }}                
                     {% if form.category.errors %}
-                        {{ form.category(class="form-control form-control-lg is-invalid") }}
+                        <p class="form-control form-control-lg is-invalid">
+                            {{ form.category.data }}
+                        </p>
                         <div class="invalid-feedback">
                             {% for error in form.category.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.category(class="form-control form-control-lg") }}
+                        <p class="form-control form-control-lg">
+                            {{ form.category.data }}
+                        </p>
                     {% endif %}
-                </div>
+                </div>                
                 <div class="form-group">
-                    {{ form.startdate.label(class="datepicker") }} {{form.hidden_tag()}}
+                    {{ form.startdate.label(class="form-control-label") }}                
                     {% if form.startdate.errors %}
-                        {{ form.startdate(class="form-control form-control-lg is-invalid") }}
+                        <p class="form-control form-control-lg is-invalid">
+                            {{ form.startdate.data }}
+                        </p>
                         <div class="invalid-feedback">
                             {% for error in form.startdate.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.startdate(class="form-control form-control-lg") }}
+                        <p class="form-control form-control-lg">
+                            {{ form.startdate.data }}
+                        </p>
                     {% endif %}
-                </div>
+                </div>                
                 <div class="form-group">
-                    {{ form.duedate.label(class="datepicker") }}
+                    {{ form.duedate.label(class="form-control-label") }}                
                     {% if form.duedate.errors %}
-                        {{ form.duedate(class="form-control form-control-lg is-invalid") }}
+                        <p class="form-control form-control-lg is-invalid">
+                            {{ form.duedate.data }}
+                        </p>
                         <div class="invalid-feedback">
                             {% for error in form.duedate.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.duedate(class="form-control form-control-lg") }}
+                        <p class="form-control form-control-lg">
+                            {{ form.duedate.data }}
+                        </p>
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.time.label(class="timepicker") }}
-                    {% if form.time.errors %}
-                        {{ form.time(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.time.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.time(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-
                 <div class="form-group">
                     {{ form.status.label(class="form-control-label") }}
                     {% if form.status.errors %}
-                        {{ form.status(class="form-control form-control-lg is-invalid") }}
+                        <p class="form-control form-control-lg is-invalid">
+                            {{ form.status.data }}
+                        </p>
                         <div class="invalid-feedback">
                             {% for error in form.status.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.status(class="form-control form-control-lg") }}
+                        <p class="form-control form-control-lg">
+                            {{ form.status.data }}
+                        </p>
                     {% endif %}
                 </div>
-
                 <div class="form-group">
-                    {{ form.hours.label(class="form-control-label") }}
-
-                    {% if form.hours.errors %}
-                        {{ form.hours(class="form-control form-control-lg is-invalid") }}
+                    {{ form.reminder_date.label(class="form-control-label") }}
+                    {% if form.reminder_date.errors %}
+                        form.reminder_date(class="form-control form-control-lg")
                         <div class="invalid-feedback">
-                            {% for error in form.hours.errors %}
+                            {% for error in form.reminder_date.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.hours(class="form-control form-control-lg") }}
+                        {{ form.reminder_date(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.reminderTime.label(class="timepicker") }}
+                    {% if form.reminderTime.errors %}
+                        {{ form.reminderTime(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.reminderTime.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.reminderTime(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
             </fieldset>

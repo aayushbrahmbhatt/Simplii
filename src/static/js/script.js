@@ -83,7 +83,7 @@ $(document).ready(function(){
         var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
         var col2=currentRow.find("td:eq(1)").text(); // get current row 2nd TD
         var col3=currentRow.find("td:eq(2)").text(); // get current row 3rd TD
-        console.log(col1);
+        console.log(col1, col2, col3);
         $.ajax({
             type: "POST",
             url: "/editTask",
@@ -100,4 +100,53 @@ $(document).ready(function(){
         })
         
     });
+});
+
+$(document).ready(function(){
+    // Initialize Sortable.js for each task list
+    new Sortable(document.getElementById('To-Do'), {
+        group: 'task-list',
+        onEnd: function (evt) {
+            updateTaskStatus(evt);
+        }
+    });
+
+    new Sortable(document.getElementById('In Progress'), {
+        group: 'task-list',
+        onEnd: function (evt) {
+            updateTaskStatus(evt);
+        }
+    });
+
+    new Sortable(document.getElementById('Done'), {
+        group: 'task-list',
+        onEnd: function (evt) {
+            updateTaskStatus(evt);
+        }
+    });
+
+    // Function to update task status in the database after drag-and-drop
+    function updateTaskStatus(evt) {
+        var taskId = evt.item.getAttribute('data-task-id');
+        var newListId = evt.to.id;
+        console.log(taskId, newListId);
+        // Send AJAX request to update task status in the database
+        $.ajax({
+            type: 'POST',
+            url: '/update_task_status',
+            data:{ 
+                "task": taskId, 
+                "status": newListId 
+            },
+            success: function (response) {
+                // resdata = JSON.parse(response)
+                console.log(resdata);
+                var url = "/updateTaskStatus?taskname=" + response.task + "&status="+ response.status;
+                window.location.href = url;            
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 });
