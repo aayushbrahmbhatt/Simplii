@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -82,4 +83,9 @@ dependencies {
     // Optional - Add window size utils
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation ("com.chargemap.compose:numberpicker:1.0.3")
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }

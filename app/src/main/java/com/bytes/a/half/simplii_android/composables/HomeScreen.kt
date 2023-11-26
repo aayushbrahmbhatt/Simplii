@@ -11,8 +11,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -22,18 +25,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.bytes.a.half.simplii_android.R
+import com.bytes.a.half.simplii_android.models.Task
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onCreateNewTask: () -> Unit) {
+fun HomeScreen(
+    todoItems: MutableList<Task>,
+    inProgressItems: MutableList<Task>,
+    doneItems: MutableList<Task>,
+    onCreateNewTask: () -> Unit
+) {
     var tabIndex by remember { mutableIntStateOf(0) }
     Scaffold(topBar = {
-        TopAppBar(title = { Text(text = stringResource(id = R.string.simplii)) })
+        TopAppBar(
+            title = { Text(text = stringResource(id = R.string.simplii)) },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Blue,
+                titleContentColor = Color.White,
+                navigationIconContentColor = Color.White,
+                actionIconContentColor = Color.White
+            )
+        )
     }, floatingActionButton = {
         FloatingActionButton(onClick = {
             onCreateNewTask()
-        }) {
+        }, containerColor = Color.Blue) {
             Icon(
                 Icons.Filled.Add, "",
                 // If tint color is provided, it will override contentColor below
@@ -48,7 +65,16 @@ fun HomeScreen(onCreateNewTask: () -> Unit) {
                 stringResource(id = R.string.done)
             )
             Column(modifier = Modifier.fillMaxWidth()) {
-                TabRow(selectedTabIndex = tabIndex) {
+                TabRow(
+                    selectedTabIndex = tabIndex,
+                    containerColor = Color.White,
+                    contentColor = Color.Blue,
+                    indicator = @Composable { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            Modifier.tabIndicatorOffset(tabPositions[tabIndex]), color = Color.Blue
+                        )
+                    }
+                ) {
                     tabList.forEachIndexed { index, title ->
                         Tab(text = { Text(title) },
                             selected = tabIndex == index,
@@ -57,9 +83,9 @@ fun HomeScreen(onCreateNewTask: () -> Unit) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> TaskScreen()
-                    1 -> TaskScreen()
-                    2 -> TaskScreen()
+                    0 -> TaskScreen(todoItems)
+                    1 -> TaskScreen(inProgressItems)
+                    2 -> TaskScreen(doneItems)
                 }
             }
         }
