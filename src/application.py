@@ -559,7 +559,6 @@ def scheduleReminder():
         return redirect(url_for('home'))
     return render_template('remainder.html',title='Reminder',form=form)
 
-
 @app.route("/editTask", methods=['GET', 'POST'])
 def editTask():
     ############################
