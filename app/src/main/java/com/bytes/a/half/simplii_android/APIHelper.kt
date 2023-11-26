@@ -1,6 +1,7 @@
 package com.bytes.a.half.simplii_android
 
 import com.bytes.a.half.simplii_android.APIConstants.BASE_URL
+import com.bytes.a.half.simplii_android.models.Reminder
 import com.bytes.a.half.simplii_android.models.Task
 import com.bytes.a.half.simplii_android.utils.FirebaseUtils
 import kotlinx.coroutines.tasks.await
@@ -40,6 +41,19 @@ object APIHelper {
         }
     }
 
+
+    fun addReminder(reminder: Reminder) {
+        val userId = FirebaseUtils.auth.uid
+        if (userId.isValidString()) {
+            val tasksReference = FirebaseUtils.database.child("reminders").child(userId!!)
+            val reference = tasksReference.push()
+            reminder.id = reference.key
+            val reminders: HashMap<String, Reminder> = HashMap()
+            reminders[reminder.id!!] = reminder
+            tasksReference.updateChildren(reminders as Map<String, Any>)
+        }
+    }
+
     fun updateTaskStatus(task: Task) {
         val userId = FirebaseUtils.auth.uid
         if (userId.isValidString()) {
@@ -61,6 +75,16 @@ object APIHelper {
         }
     }
 
+    fun deleteReminder(reminder: Reminder) {
+        val userId = FirebaseUtils.auth.uid
+        if (userId.isValidString()) {
+            val reminderReference = FirebaseUtils.database.child("reminders").child(userId!!)
+            if (reminder.id.isValidString()) {
+                reminderReference.child(reminder.id!!).removeValue()
+            }
+        }
+    }
+
     suspend fun getTasks(): ArrayList<Task> {
         val tasksList = ArrayList<Task>()
         val userId = FirebaseUtils.auth.uid
@@ -75,6 +99,22 @@ object APIHelper {
             }
         }
         return tasksList
+    }
+
+    suspend fun getReminders(): ArrayList<Reminder> {
+        val reminders = ArrayList<Reminder>()
+        val userId = FirebaseUtils.auth.uid
+        if (userId.isValidString()) {
+            val remindersReference = FirebaseUtils.database.child("reminders").child(userId!!)
+            val reminderSnapshots = remindersReference.get().await()
+            for (snapshot in reminderSnapshots.children) {
+                val task = snapshot.getValue(Reminder::class.java)
+                if (task != null) {
+                    reminders.add(task)
+                }
+            }
+        }
+        return reminders
     }
 
 

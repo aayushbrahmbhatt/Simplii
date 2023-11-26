@@ -39,9 +39,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bytes.a.half.simplii_android.R
-import com.bytes.a.half.simplii_android.SimpliiConstants
+import com.bytes.a.half.simplii_android.models.Reminder
+import com.bytes.a.half.simplii_android.utils.FirebaseUtils
 import java.util.Calendar
-import java.util.Date
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,13 +50,16 @@ fun ReminderScreen(
     taskId: String,
     taskTitle: String,
     onClose: () -> Unit,
-    onSetReminder: () -> Unit
+    onSetReminder: (reminder: Reminder) -> Unit
 ) {
     var reminderDateString by remember {
         mutableStateOf("")
     }
     var reminderTimeString by remember {
         mutableStateOf("")
+    }
+    var selectedDate by remember {
+        mutableStateOf(Calendar.getInstance())
     }
     Scaffold(topBar = {
         TopAppBar(
@@ -76,7 +79,11 @@ fun ReminderScreen(
             },
             actions = {
                 IconButton(onClick = {
-
+                    val reminder = Reminder()
+                    reminder.taskId = taskId
+                    reminder.userId = FirebaseUtils.auth.uid
+                    reminder.reminderDate = selectedDate.time
+                    onSetReminder(reminder)
                 }) {
                     Icon(Icons.Filled.Done, contentDescription = null)
                 }
@@ -92,6 +99,10 @@ fun ReminderScreen(
         val openDatePickerDialog = remember { mutableStateOf(false) }
         val openTimePickerDialog = remember { mutableStateOf(false) }
         LazyColumn(modifier = Modifier.padding(it)) {
+
+            item {
+                Text(text = taskTitle, modifier = Modifier.padding(16.dp))
+            }
             item {
                 if (openDatePickerDialog.value) {
                     val datePickerState = rememberDatePickerState()
@@ -101,7 +112,14 @@ fun ReminderScreen(
                         TextButton(
                             onClick = {
                                 openDatePickerDialog.value = false
-
+                                val calendar = Calendar.getInstance()
+                                calendar.timeInMillis = datePickerState.selectedDateMillis!!
+                                selectedDate.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
+                                selectedDate.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
+                                selectedDate.set(
+                                    Calendar.DAY_OF_YEAR,
+                                    calendar.get(Calendar.DAY_OF_MONTH)
+                                )
                             }, enabled = true
                         ) {
                             Text("OK")
@@ -124,10 +142,9 @@ fun ReminderScreen(
                     TimePickerDialog(
                         onCancel = { openTimePickerDialog.value = false },
                         onConfirm = {
-                            val cal = Calendar.getInstance()
-                            cal.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
-                            cal.set(Calendar.MINUTE, timePickerState.minute)
-                            cal.isLenient = false
+                            selectedDate.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
+                            selectedDate.set(Calendar.MINUTE, timePickerState.minute)
+                            selectedDate.set(Calendar.SECOND, 0)
                             openTimePickerDialog.value = false
                         },
                     ) {

@@ -15,6 +15,7 @@ object SimpliiConstants {
     const val KEY_TASK_ID = "taskId"
 
     const val CREATE_TASK_REQUEST_CODE = 1
+    const val SET_REMINDER_REQUEST_CODE = 2
 
 
 

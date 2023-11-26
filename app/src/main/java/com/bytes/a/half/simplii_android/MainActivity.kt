@@ -16,9 +16,9 @@ import java.util.Date
 class MainActivity : AppCompatActivity() {
 
 
-    val todoItems: MutableList<Task> = mutableStateListOf()
-    val inProgressItems: MutableList<Task> = mutableStateListOf()
-    val doneItems: MutableList<Task> = mutableStateListOf()
+    private val todoItems: MutableList<Task> = mutableStateListOf()
+    private val inProgressItems: MutableList<Task> = mutableStateListOf()
+    private val doneItems: MutableList<Task> = mutableStateListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            HomeScreen(todoItems, inProgressItems, doneItems) {
+            HomeScreen(todoItems, inProgressItems, doneItems, onSetReminder = { task ->
+                setReminder(task)
+            }, onShowReminders = {
+
+            }) {
                 openCreateTask()
             }
         }
@@ -54,6 +58,19 @@ class MainActivity : AppCompatActivity() {
     private fun openCreateTask() {
         val intent = Intent(this, CreateTaskActivity::class.java)
         startActivityForResult(intent, SimpliiConstants.CREATE_TASK_REQUEST_CODE)
+    }
+
+
+    private fun setReminder(task: Task) {
+        val intent = Intent(this, ReminderActivity::class.java)
+        intent.putExtra(SimpliiConstants.KEY_TASK_TITLE, task.title)
+        intent.putExtra(SimpliiConstants.KEY_TASK_ID, task.id)
+        startActivityForResult(intent, SimpliiConstants.SET_REMINDER_REQUEST_CODE)
+    }
+
+
+    private fun showReminders() {
+        val intent = Intent()
     }
 
 
@@ -95,6 +112,12 @@ class MainActivity : AppCompatActivity() {
                             doneItems.add(newTask)
                         }
                     }
+
+                }
+            }
+
+            SimpliiConstants.SET_REMINDER_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
 
                 }
             }

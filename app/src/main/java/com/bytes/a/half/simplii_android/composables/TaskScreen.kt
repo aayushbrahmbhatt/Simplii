@@ -25,7 +25,7 @@ import com.bytes.a.half.simplii_android.models.Task
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TaskScreen(tasks: MutableList<Task>) {
+fun TaskScreen(tasks: MutableList<Task>, onSetReminder: (task: Task) -> Unit) {
 
     Scaffold {
         LazyColumn(modifier = Modifier.padding(it)) {
@@ -38,7 +38,7 @@ fun TaskScreen(tasks: MutableList<Task>) {
                         Text(item.title ?: "")
                     }, trailing = {
                         Icon(Icons.Filled.AccessAlarm, "", modifier = Modifier.clickable {
-
+                            onSetReminder(item)
                         })
                     })
                 }
