@@ -36,4 +36,6 @@
     <string name="set_reminder">Set reminder</string>
     <string name="reminder_date">Reminder date</string>
     <string name="reminder_time">Reminder time</string>
+    <string name="reminders">Reminders</string>
+    <string name="open_ai_api_key">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</string>
 </resources>

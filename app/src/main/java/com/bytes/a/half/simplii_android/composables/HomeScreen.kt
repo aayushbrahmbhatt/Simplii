@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.HotelClass
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -40,6 +41,7 @@ fun HomeScreen(
     doneItems: MutableList<Task>,
     onSetReminder: (task: Task) -> Unit,
     onShowReminders: () -> Unit,
+    onContextTodos : () -> Unit,
     onCreateNewTask: () -> Unit
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
@@ -53,9 +55,15 @@ fun HomeScreen(
                 actionIconContentColor = Color.White
             ), actions = {
                 IconButton(onClick = {
-
+                    onShowReminders()
                 }) {
                     Icon(Icons.Filled.Notifications, contentDescription = null)
+                }
+
+                IconButton(onClick = {
+                    onContextTodos()
+                }) {
+                    Icon(Icons.Filled.HotelClass, contentDescription = null)
                 }
             }
         )

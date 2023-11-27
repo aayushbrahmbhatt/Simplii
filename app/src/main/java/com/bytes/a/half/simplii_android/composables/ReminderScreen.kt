@@ -83,6 +83,7 @@ fun ReminderScreen(
                     reminder.taskId = taskId
                     reminder.userId = FirebaseUtils.auth.uid
                     reminder.reminderDate = selectedDate.time
+                    reminder.taskTitle = taskTitle
                     onSetReminder(reminder)
                 }) {
                     Icon(Icons.Filled.Done, contentDescription = null)

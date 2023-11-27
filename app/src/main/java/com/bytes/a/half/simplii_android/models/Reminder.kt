@@ -6,6 +6,7 @@ data class Reminder(
     var id: String? = "",
     var taskId: String? = "",
     var userId: String? = "",
+    var taskTitle : String? = "",
     var reminderDate: Date = Date()
 ) {
 }

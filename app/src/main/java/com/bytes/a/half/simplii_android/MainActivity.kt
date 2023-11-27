@@ -14,8 +14,6 @@ import com.bytes.a.half.simplii_android.models.Task
 import java.util.Date
 
 class MainActivity : AppCompatActivity() {
-
-
     private val todoItems: MutableList<Task> = mutableStateListOf()
     private val inProgressItems: MutableList<Task> = mutableStateListOf()
     private val doneItems: MutableList<Task> = mutableStateListOf()
@@ -48,7 +46,9 @@ class MainActivity : AppCompatActivity() {
             HomeScreen(todoItems, inProgressItems, doneItems, onSetReminder = { task ->
                 setReminder(task)
             }, onShowReminders = {
-
+                showReminders()
+            }, onContextTodos = {
+                openContextTodos()
             }) {
                 openCreateTask()
             }
@@ -70,7 +70,14 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun showReminders() {
-        val intent = Intent()
+        val intent = Intent(this, ReminderListActivity::class.java)
+        startActivity(intent)
+
+    }
+
+    private fun openContextTodos() {
+        val intent = Intent(this,ContextTodo::class.java)
+        startActivityForResult(intent,SimpliiConstants.CONTEXT_TODO_REQUEST_CODE)
     }
 
 

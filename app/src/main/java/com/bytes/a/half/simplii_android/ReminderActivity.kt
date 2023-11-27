@@ -13,6 +13,8 @@ class ReminderActivity : AppCompatActivity() {
         setContent {
             ReminderScreen(taskId = taskId, taskTitle = taskTitle, onClose = { finish() }) { reminder ->
                 APIHelper.addReminder(reminder)
+                SimpliiUtils.scheduleReminder(this,reminder)
+                finish()
             }
         }
     }
