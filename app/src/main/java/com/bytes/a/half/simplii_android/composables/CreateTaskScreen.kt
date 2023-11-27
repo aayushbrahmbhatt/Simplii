@@ -35,6 +35,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,13 +50,45 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bytes.a.half.simplii_android.R
+import com.bytes.a.half.simplii_android.SimpliiConstants
 import com.bytes.a.half.simplii_android.SimpliiConstants.DUE_DATE_PICKER
 import com.bytes.a.half.simplii_android.SimpliiConstants.START_DATE_PICKER
+import com.bytes.a.half.simplii_android.SimpliiUtils.formatSelectedDate
+import com.bytes.a.half.simplii_android.models.Task
+import java.util.Calendar
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTaskScreen() {
+fun CreateTaskScreen(onClose: () -> Unit, onCreateTask: (task: Task) -> Unit) {
+
+    var taskTitle by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+    var hoursText by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+    var datePickerOption by remember {
+        mutableIntStateOf(DUE_DATE_PICKER)
+    }
+    var startDateString by remember {
+        mutableStateOf("")
+    }
+    var dueDateString by remember {
+        mutableStateOf("")
+    }
+    var startDate by remember {
+        mutableLongStateOf(-1L)
+    }
+    var endDate by remember {
+        mutableLongStateOf(-1L)
+    }
+    var category by remember {
+        mutableIntStateOf(SimpliiConstants.TaskCategory.INTELLECTUAL)
+    }
+    var status by remember {
+        mutableIntStateOf(SimpliiConstants.TaskStatus.TODO)
+    }
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -66,12 +99,23 @@ fun CreateTaskScreen() {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    onClose()
+                }) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = null)
                 }
             },
             actions = {
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    val newTask = Task()
+                    newTask.title = taskTitle.text
+                    newTask.startDate = Date(startDate)
+                    newTask.dueDate = Date(endDate)
+                    newTask.hours = hoursText.text.toInt()
+                    newTask.category = category
+                    newTask.status = status
+                    onCreateTask(newTask)
+                }) {
                     Icon(Icons.Filled.Done, contentDescription = null)
                 }
             },
@@ -83,21 +127,7 @@ fun CreateTaskScreen() {
             )
         )
     }) {
-        var taskTitle by remember {
-            mutableStateOf(TextFieldValue(""))
-        }
-        var hoursText by remember {
-            mutableStateOf(TextFieldValue(""))
-        }
-        var datePickerOption by remember {
-            mutableIntStateOf(DUE_DATE_PICKER)
-        }
-        var startDate by remember {
-            mutableStateOf("")
-        }
-        var dueDate by remember {
-            mutableStateOf("")
-        }
+
         val openDatePickerDialog = remember { mutableStateOf(false) }
         var pickerValue by remember { mutableIntStateOf(0) }
         rememberDatePickerState(initialSelectedDateMillis = Date().time)
@@ -155,7 +185,16 @@ fun CreateTaskScreen() {
                                 .height(56.dp)
                                 .selectable(
                                     selected = (text == selectedOption),
-                                    onClick = { onOptionSelected(text) },
+                                    onClick = {
+                                        when (text) {
+                                            "Todo" -> status = SimpliiConstants.TaskStatus.TODO
+                                            "In progress" -> status =
+                                                SimpliiConstants.TaskStatus.IN_PROGRESS
+
+                                            else -> status = SimpliiConstants.TaskStatus.DONE
+                                        }
+                                        onOptionSelected(text)
+                                    },
                                     role = Role.RadioButton
                                 )
                                 .padding(horizontal = 16.dp),
@@ -196,7 +235,19 @@ fun CreateTaskScreen() {
                                 .height(56.dp)
                                 .selectable(
                                     selected = (text == selectedOption),
-                                    onClick = { onOptionSelected(text) },
+                                    onClick = {
+                                        when (text) {
+                                            "Intellectual" -> {
+                                                category =
+                                                    SimpliiConstants.TaskCategory.INTELLECTUAL
+                                            }
+
+                                            else -> {
+                                                category = SimpliiConstants.TaskCategory.PHYSICAL
+                                            }
+                                        }
+                                        onOptionSelected(text)
+                                    },
                                     role = Role.RadioButton
                                 )
                                 .padding(horizontal = 16.dp),
@@ -262,12 +313,17 @@ fun CreateTaskScreen() {
                         TextButton(
                             onClick = {
                                 openDatePickerDialog.value = false
+                                val calendar = Calendar.getInstance()
+                                calendar.timeInMillis = datePickerState.selectedDateMillis!!
+                                calendar.add(Calendar.DATE, 1)
                                 if (datePickerOption == DUE_DATE_PICKER) {
-                                    dueDate =
-                                        Date(datePickerState.selectedDateMillis!!).toLocaleString()
+                                    dueDateString =
+                                        formatSelectedDate(Date(calendar.timeInMillis))
+                                    endDate = calendar.timeInMillis
                                 } else {
-                                    startDate =
-                                        Date(datePickerState.selectedDateMillis!!).toLocaleString()
+                                    startDateString =
+                                        formatSelectedDate(Date(calendar.timeInMillis))
+                                    startDate = calendar.timeInMillis
                                 }
                             }, enabled = true
                         ) {
@@ -290,7 +346,7 @@ fun CreateTaskScreen() {
                     datePickerOption = START_DATE_PICKER
                     openDatePickerDialog.value = true
                 }) {
-                    OutlinedTextField(value = startDate, modifier = Modifier
+                    OutlinedTextField(value = startDateString, modifier = Modifier
                         .heightIn(50.dp)
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp),
@@ -330,7 +386,7 @@ fun CreateTaskScreen() {
                         .heightIn(50.dp)
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                        value = dueDate,
+                        value = dueDateString,
                         enabled = false,
                         onValueChange = {},
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
