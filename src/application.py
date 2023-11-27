@@ -540,25 +540,30 @@ def scheduleReminder():
         # print("relevant reminders ",relevant_reminders)
 
         # Create an HTML table from the reminder data
-        reminder_table_html = ("<table border='1'>"
-                               "<tr>"  "<th>Task Name</th>"
-                                       "<th>Category</th>"
-                                       "<th>Start Date</th>"
-                                       "<th>Due Date</th></tr>")
+        # reminder_table_html = ("<table border='1'>"
+        #                        "<tr>"  "<th>Task Name</th>"
+        #                                "<th>Category</th>"
+        #                                "<th>Start Date</th>"
+        #                                "<th>Due Date</th></tr>")
 
         # for reminder in relevant_reminders:
         # reminder_table_html += f"<tr><td>{reminder['taskname']}</td><td>{reminder['category']}</td><td>{reminder['startdate']}</td><td>{reminder['duedate']}</tr>"
 
-        reminder_table_html += "</table>"
+        # reminder_table_html += "</table>"
 
         # Compose the reminder email
         email = session.get('email')
-        msg = Message('Reminder: Upcoming Task', sender='simplii@gmail.com', recipients=[email])
-        msg.extra_headers = {'X-SMTPAPI': json.dumps({'send_at': reminder_date})}
+        msg = Message('Reminder: Upcoming Task', sender='dummysinghhh@gmail.com', recipients=[email])
+        scheduled = int(time.mktime(reminder_date_str.timetuple()))
+        print("time of reminder", scheduled)
+        msg.extra_headers = {'X-SMTPAPI': json.dumps({'send_at': scheduled})}
         # Create the HTML version of the email with the reminder table
-        reminder_email_body = f"Here are your upcoming reminders:\n\n{reminder_table_html}"
+        # reminder_email_body = f"Here are your upcoming reminders:\n\n{reminder_table_html}"
+        reminder_email_body = f"There is an upcoming reminder for you!!\n"
         msg.html = reminder_email_body
         mail.send(msg)
+
+        # schedule.every().day.at(reminder_date).do(scheduleReminder)
 
         flash(f'Reminder Scheduled!', 'success')
         return redirect(url_for('home'))
