@@ -7,10 +7,12 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.lifecycleScope
 import com.bytes.a.half.simplii_android.SimpliiConstants.TASK_STATUS_IN_PROGRESS
 import com.bytes.a.half.simplii_android.SimpliiConstants.TASK_STATUS_TODO
 import com.bytes.a.half.simplii_android.composables.HomeScreen
 import com.bytes.a.half.simplii_android.models.Task
+import kotlinx.coroutines.launch
 import java.util.Date
 
 class MainActivity : AppCompatActivity() {
@@ -23,25 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             LaunchedEffect(Unit) {
-                val tasks = APIHelper.getTasks()
-                todoItems.clear()
-                inProgressItems.clear()
-                doneItems.clear()
-                tasks.forEach {
-                    when (it.status) {
-                        SimpliiConstants.TaskStatus.TODO -> {
-                            todoItems.add(it)
-                        }
-
-                        SimpliiConstants.TaskStatus.IN_PROGRESS -> {
-                            inProgressItems.add(it)
-                        }
-
-                        else -> {
-                            doneItems.add(it)
-                        }
-                    }
-                }
+                fetchTasks()
             }
             HomeScreen(todoItems, inProgressItems, doneItems, onSetReminder = { task ->
                 setReminder(task)
@@ -71,13 +55,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showReminders() {
         val intent = Intent(this, ReminderListActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, SimpliiConstants.SHOW_REMINDERS)
 
     }
 
     private fun openContextTodos() {
-        val intent = Intent(this,ContextTodo::class.java)
-        startActivityForResult(intent,SimpliiConstants.CONTEXT_TODO_REQUEST_CODE)
+        val intent = Intent(this, ContextTodo::class.java)
+        startActivityForResult(intent, SimpliiConstants.CONTEXT_TODO_REQUEST_CODE)
     }
 
 
@@ -129,6 +113,36 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            SimpliiConstants.CONTEXT_TODO_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    lifecycleScope.launch {
+                        fetchTasks()
+                    }
+                }
+            }
+
+        }
+    }
+
+    suspend fun fetchTasks() {
+        val tasks = APIHelper.getTasks()
+        todoItems.clear()
+        inProgressItems.clear()
+        doneItems.clear()
+        tasks.forEach {
+            when (it.status) {
+                SimpliiConstants.TaskStatus.TODO -> {
+                    todoItems.add(it)
+                }
+
+                SimpliiConstants.TaskStatus.IN_PROGRESS -> {
+                    inProgressItems.add(it)
+                }
+
+                else -> {
+                    doneItems.add(it)
+                }
+            }
         }
     }
 }

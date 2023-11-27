@@ -37,5 +37,10 @@
     <string name="reminder_date">Reminder date</string>
     <string name="reminder_time">Reminder time</string>
     <string name="reminders">Reminders</string>
-    <string name="open_ai_api_key">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</string>
+    <string name="open_ai_api_key">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</string>
+    <string name="query">Query</string>
+    <string name="context_todo">Tudum - Smart Assistant</string>
+    <string name="how_can_i_help">Hi! How can i help you?</string>
+    <string name="ask_tudum">Ask Tudum</string>
+    <string name="add_to_list">Add to list</string>
 </resources>

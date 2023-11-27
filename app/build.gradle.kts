@@ -93,6 +93,7 @@ dependencies {
     implementation(openAIBOM)
     implementation("com.aallam.openai:openai-client")
     runtimeOnly("io.ktor:ktor-client-okhttp")
+    implementation("org.jsoup:jsoup:1.16.1")
 
 
 }

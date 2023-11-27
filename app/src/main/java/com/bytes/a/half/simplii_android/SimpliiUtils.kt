@@ -12,7 +12,10 @@ import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.http.Timeout
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import com.aallam.openai.client.RetryStrategy
 import com.bytes.a.half.simplii_android.models.Reminder
+import com.bytes.a.half.simplii_android.models.Task
+import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.time.Duration.Companion.seconds
@@ -56,10 +59,11 @@ object SimpliiUtils {
         return dateFormatter.format(date)
     }
 
-    suspend fun queryChatGPT(context: Context, query: String): String {
+    suspend fun queryChatGPT(context: Context, query: String): List<Task> {
+        val todoList = ArrayList<Task>()
         val openAI = OpenAI(
             token = context.getString(R.string.open_ai_api_key),
-            timeout = Timeout(socket = 60.seconds),
+            retry = RetryStrategy(maxRetries = 1)
             // additional configurations...
         )
 
@@ -73,7 +77,23 @@ object SimpliiUtils {
             )
         )
         val completion: ChatCompletion = openAI.chatCompletion(chatCompletionRequest)
-        return completion.choices[0].message.content ?: ""
+        val response = completion.choices.first().message.content ?: ""
+        val document = Jsoup.parse(response)
+        document.outputSettings().prettyPrint(false)
+
+        val listItems = document.select("li")
+
+        listItems.forEach {
+            val task = Task()
+            task.title = it.text()
+            task.startDate = Date()
+            task.category = SimpliiConstants.TaskCategory.SMART_TODO
+            task.status = SimpliiConstants.TaskStatus.TODO
+            task.hours = 1
+            todoList.add(task)
+        }
+
+        return todoList
 
     }
 }

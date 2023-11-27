@@ -121,6 +121,7 @@ fun ReminderScreen(
                                     Calendar.DAY_OF_YEAR,
                                     calendar.get(Calendar.DAY_OF_MONTH)
                                 )
+                                reminderDateString = selectedDate.toString()
                             }, enabled = true
                         ) {
                             Text("OK")
@@ -147,6 +148,7 @@ fun ReminderScreen(
                             selectedDate.set(Calendar.MINUTE, timePickerState.minute)
                             selectedDate.set(Calendar.SECOND, 0)
                             openTimePickerDialog.value = false
+                            reminderTimeString = selectedDate.toString()
                         },
                     ) {
                         TimePicker(state = timePickerState)
@@ -164,7 +166,6 @@ fun ReminderScreen(
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                         enabled = false,
                         onValueChange = {
-
                         },
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         colors = OutlinedTextFieldDefaults.colors(
