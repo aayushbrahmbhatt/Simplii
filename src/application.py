@@ -7,6 +7,8 @@ from werkzeug.security import generate_password_hash
 import schedule
 import time
 import atexit
+import os
+from openai import OpenAI
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -24,6 +26,9 @@ import bcrypt
 import os
 import csv
 import sys
+import openai
+import asyncio
+from openai import AsyncOpenAI
 
 from flask_login import LoginManager, login_required
 
@@ -317,7 +322,7 @@ def dashboard():
     # Output: Our function will redirect to the dashboard page with user tasks being displayed
     # ##########################
     tasks = ''
-    print('session in dashboard ',session)
+    reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
     if session.get('user_id'):
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
     return render_template('dashboard.html', tasks=tasks)
@@ -559,6 +564,16 @@ def scheduleReminder():
         return redirect(url_for('home'))
     return render_template('remainder.html',title='Reminder',form=form)
 
+async def chatgptquery(query):
+    client = AsyncOpenAI(api_key = os.getenv('OPENAI_API_KEY'))  # defaults to os.environ.get("OPENAI_API_KEY")
+    messages = []
+    user_query = query + "\n Give the output in html format"
+    messages.append({"role": "user", "content": user_query})
+    completion = await client.chat.completions.create(model="gpt-3.5-turbo", messages=messages) 
+    reply = completion.choices[0].message.content
+    
+    return reply
+        
 
 @app.route("/editTask", methods=['GET', 'POST'])
 def editTask():
