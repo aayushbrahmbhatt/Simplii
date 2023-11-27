@@ -35,10 +35,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bytes.a.half.simplii_android.R
+import com.bytes.a.half.simplii_android.SimpliiUtils.formatSelectedDate
+import com.bytes.a.half.simplii_android.SimpliiUtils.formatSelectedTime
 import com.bytes.a.half.simplii_android.models.Reminder
 import com.bytes.a.half.simplii_android.utils.FirebaseUtils
 import java.util.Calendar
@@ -102,7 +105,12 @@ fun ReminderScreen(
         LazyColumn(modifier = Modifier.padding(it)) {
 
             item {
-                Text(text = taskTitle, modifier = Modifier.padding(16.dp))
+                Text(
+                    text = taskTitle,
+                    modifier = Modifier.padding(16.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
             }
             item {
                 if (openDatePickerDialog.value) {
@@ -118,10 +126,11 @@ fun ReminderScreen(
                                 selectedDate.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
                                 selectedDate.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
                                 selectedDate.set(
-                                    Calendar.DAY_OF_YEAR,
+                                    Calendar.DAY_OF_MONTH,
                                     calendar.get(Calendar.DAY_OF_MONTH)
                                 )
-                                reminderDateString = selectedDate.toString()
+                                selectedDate.add(Calendar.DATE, 1)
+                                reminderDateString = formatSelectedDate(selectedDate.time)
                             }, enabled = true
                         ) {
                             Text("OK")
@@ -148,7 +157,7 @@ fun ReminderScreen(
                             selectedDate.set(Calendar.MINUTE, timePickerState.minute)
                             selectedDate.set(Calendar.SECOND, 0)
                             openTimePickerDialog.value = false
-                            reminderTimeString = selectedDate.toString()
+                            reminderTimeString = formatSelectedTime(selectedDate.time)
                         },
                     ) {
                         TimePicker(state = timePickerState)

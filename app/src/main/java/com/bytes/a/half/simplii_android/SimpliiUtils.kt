@@ -59,6 +59,16 @@ object SimpliiUtils {
         return dateFormatter.format(date)
     }
 
+    fun formatSelectedDate(date: Date) : String {
+        val dateFormatter = SimpleDateFormat("MM/dd/yyyy")
+        return dateFormatter.format(date)
+    }
+
+    fun formatSelectedTime(date: Date) : String {
+        val dateFormatter = SimpleDateFormat("hh:mm a")
+        return dateFormatter.format(date)
+    }
+
     suspend fun queryChatGPT(context: Context, query: String): List<Task> {
         val todoList = ArrayList<Task>()
         val openAI = OpenAI(

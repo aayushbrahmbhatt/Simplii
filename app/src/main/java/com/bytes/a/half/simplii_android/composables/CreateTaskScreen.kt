@@ -53,7 +53,9 @@ import com.bytes.a.half.simplii_android.R
 import com.bytes.a.half.simplii_android.SimpliiConstants
 import com.bytes.a.half.simplii_android.SimpliiConstants.DUE_DATE_PICKER
 import com.bytes.a.half.simplii_android.SimpliiConstants.START_DATE_PICKER
+import com.bytes.a.half.simplii_android.SimpliiUtils.formatSelectedDate
 import com.bytes.a.half.simplii_android.models.Task
+import java.util.Calendar
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -311,14 +313,17 @@ fun CreateTaskScreen(onClose: () -> Unit, onCreateTask: (task: Task) -> Unit) {
                         TextButton(
                             onClick = {
                                 openDatePickerDialog.value = false
+                                val calendar = Calendar.getInstance()
+                                calendar.timeInMillis = datePickerState.selectedDateMillis!!
+                                calendar.add(Calendar.DATE, 1)
                                 if (datePickerOption == DUE_DATE_PICKER) {
                                     dueDateString =
-                                        Date(datePickerState.selectedDateMillis!!).toLocaleString()
-                                    endDate = datePickerState.selectedDateMillis!!
+                                        formatSelectedDate(Date(calendar.timeInMillis))
+                                    endDate = calendar.timeInMillis
                                 } else {
                                     startDateString =
-                                        Date(datePickerState.selectedDateMillis!!).toLocaleString()
-                                    startDate = datePickerState.selectedDateMillis!!
+                                        formatSelectedDate(Date(calendar.timeInMillis))
+                                    startDate = calendar.timeInMillis
                                 }
                             }, enabled = true
                         ) {
