@@ -150,3 +150,17 @@ $(document).ready(function(){
         });
     }
 });
+
+$(document).ready(function(){
+
+    function search(){
+        const gptForm = document.getElementById("searchQuery");
+        // check when the form is submitted
+        gptForm.addEventListener("submit", (event) => {
+        const searchBarValue = document.getElementById("search").value;
+        event.preventDefault();
+        window.location.href = `gpt.html?value=${searchBarValue}`;
+        });
+    }
+
+});

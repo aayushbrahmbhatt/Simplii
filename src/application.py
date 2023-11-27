@@ -239,6 +239,12 @@ def kanbanBoard():
 
 @app.route("/update_task_status", methods=['POST'])
 def update_task_status():
+    ############################
+    # update_task_status() function updates the tasks status by changing in the KanbanBoard.
+    # route "/update_task_status" will redirect to kanbanBoard() function.
+    # input: The function O/p of sortable from KanbanBoard actions.
+    # Output: Our function will display updated tasks in a Kanban Board format
+    # ##########################
     try:
         user_str_id = session.get('user_id')
         user_id = ObjectId(user_str_id)
@@ -326,6 +332,27 @@ def dashboard():
     if session.get('user_id'):
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
     return render_template('dashboard.html', tasks=tasks)
+
+@app.route("/gpt", methods=['GET', 'POST'])
+def gpt():
+    ############################
+    # dashboard() function displays the tasks of the user
+    # route "/dashboard" will redirect to dashboard() function.
+    # input: The function takes session as the input and fetches user tasks from Database
+    # Output: Our function will redirect to the dashboard page with user tasks being displayed
+    # ##########################
+    params = request.url.split('?')[1].split('+')
+    # for i in range(len(params)):
+    #     params[i] = params[i].split('=')
+    # for i in range(len(params)):
+    #     if "%" in params[i][1]:
+    #         index = params[i][1].index('%')
+    #         params[i][1] = params[i][1][:index] + \
+    #                        " " + params[i][1][index + 3:]
+    # d = {}
+    # for i in params:
+    #     d[i[0]] = i[1]
+    return render_template('gpt.html', searchQuery=params)
 
 
 @app.route("/about")
