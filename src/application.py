@@ -29,6 +29,7 @@ import sys
 import openai
 import asyncio
 from openai import AsyncOpenAI
+from utils import format_gcal_date
 
 from flask_login import LoginManager, login_required
 
@@ -328,10 +329,15 @@ def dashboard():
     # Output: Our function will redirect to the dashboard page with user tasks being displayed
     # ##########################
     tasks = ''
-    reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
+    # reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
     if session.get('user_id'):
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
-    return render_template('dashboard.html', tasks=tasks)
+        task_list = []
+        for task in tasks:
+            print(task)
+            task["gcal_link"] = format_gcal_date(task.get('taskname'),task.get('startdate'),task.get('duedate'))
+            task_list.append(task)
+    return render_template('dashboard.html', tasks=task_list)
 
 @app.route("/gpt", methods=['GET', 'POST'])
 def gpt():

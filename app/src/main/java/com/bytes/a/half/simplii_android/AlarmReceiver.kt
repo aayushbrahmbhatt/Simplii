@@ -40,7 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentText(taskTitle)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         with(NotificationManagerCompat.from(context)) {
             // notificationId is a unique int for each notification that you must define.
@@ -68,7 +68,7 @@ class AlarmReceiver : BroadcastReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Task Notification"
             val descriptionText = "Channel to remind about tasks"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("TASK_NOTIFICATION", name, importance).apply {
                 description = descriptionText
             }
