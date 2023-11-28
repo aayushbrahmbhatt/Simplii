@@ -1,5 +1,5 @@
 # Simplii - Task Management Web and Android Application
-[![DOI](https://zenodo.org/badge/404911045.svg)](https://zenodo.org/badge/latestdoi/404911045)
+[![DOI](https://zenodo.org/badge/720901435.svg)](https://zenodo.org/doi/10.5281/zenodo.10212287)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Github](https://img.shields.io/badge/language-python-red.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
