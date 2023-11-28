@@ -1,6 +1,4 @@
-<p><b></b> Simplii Your Task Scheduler</b> </p>
-<p align="center"><img width="700" src="./assets/Simplii Image pic.jpg"></p>
-
+# Simplii - Task Management Web and Android Application
 [![DOI](https://zenodo.org/badge/404911045.svg)](https://zenodo.org/badge/latestdoi/404911045)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Github](https://img.shields.io/badge/language-python-red.svg)
@@ -27,19 +25,15 @@
 </a>
 
 
-# SIMPLII 4.0
+# Simplii 5.0
 
-<h3>Are you trying to manage tasks? Simplii keep track of them, with all new Simplii 4.0!!! </h3>
+<h3>Are you trying to manage tasks? Simplii keep track of them, with all new Simplii 5.0!!! </h3>
 
-Introducing Simplii, the almost perfect task management solution. It is similar to having a personal assistant, just like Tony Stark's Jarvis minus its witty quips. Without magic spells or secret societies, Simplii is your go-to partner in task management when it comes to productivity and organization. With Simplii, organizing your to-do list is as effortless as James Bond's flawless style, without the high-speed chases or secret spy devices. If you are prepared to transform an average day into an exceptional day, with the power of the God of Thunder, Thor, or with the determination of Captain America, Simplii let Simplii be your guide to the path of productivity.
-
-<p align="center">
-<img width="614"  src="./assets/thor.gif">
-</p>
+Simplii is a versatile task management application available on both web and Android platforms. It offers a seamless experience for managing tasks efficiently.
 
 ## Link to Demonstration Video of the Project: 
 
-https://youtu.be/8XT07zayAqI 
+
 
 
 # Table of Contents  
@@ -78,83 +72,87 @@ https://youtu.be/8XT07zayAqI
 -User can keep track of not just work that is in progress, but also completed tasks.<br>
 -Tasks can be viewed based on the priority of the deadline.<br>
 -Users can set up email reminders when a task approaches a deadline.<br>
--Most importantly, with simplii, users are always up for a stress-free outing!!!
-
-<p align="center">
-<img width="614"  src="./assets/friends-hangout.gif">
-</p>
+-A kanban board type of view for easy tasks status visualization.<br>
+-Users can set reminders of important tasks and plan accordingly.
 
 ## Use Case
 
 -All people who love to multi-task their way through life would love Simplii as it helps them keep track of various tasks in the most simple manner.
 -Anyone who is new to technology and would be overwhelmed by amazing and well-developed organising applications like google calender/apple calander, would love Simplii.
+-Anyone with a need to keep up with the day-to-day tasks and wants to manage them effectively.
 
 ## Built with:
-<table border = "0px">
-  <tr>
-<td align="center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="40" height="40" /><b>Python</b></td>
-<td align="center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="40" height="40" /><b>JavaScript</b></td>
-<td align="center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="40" height="40"/><b>HTML5</b></td>
-<td align="center"><img src ="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="40" height="40"/><b>CSS3</b></td>
-<td align="center"><img src ="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" width="40" height="40"/><b>Bootstrap</b></td>
-<td align="center"><img src ="https://raw.githubusercontent.com/devicons/devicon/v2.14.0/icons/flask/flask-original.svg" width="40" height="40"/><b>Flask</b></td>
-<td align="center"><img src ="https://raw.githubusercontent.com/devicons/devicon/v2.14.0/icons/mongodb/mongodb-original.svg" width="40" height="40"/><b>MongoDB</b></td>  
-  </tr>
-</table>
- 
- ### User Interface Register 
+
+- Python
+- JavaScript
+- HTML5
+- CSS3
+- Bootstrap
+- Flask
+- MongoDB
+- Android Studio
+- Firebase
+
+## Enhancements
+
+### User Interface Register 
 <p> You can create your own account and register on the website. You can store your data and can access the data whenever required. </p>
-<p align="center"><img width="700" src="./assets/Registration Page.png"></p>
+<p align="center"><img width="700" src="./assets/Register.png"></p>
 
  ### Welcome Email 
 <p> Once your register for Simplii, you get a welcome email from us appreciating your interest in using our website and welcoming you onboard. </p>
-<p align="center"><img width="700" src="./assets/AccountCreatingEmail.png"></p>
+<p align="center"><img width="700" src="./assets/welcome email.png"></p>
  
 ### User Interface Login 
 <p> Once you create an account, you can login to the website using your credentials </p>
-<p align="center"><img width="700" src="./assets/Login Page.png"></p>
+<p align="center"><img width="700" src="./assets/login .png"></p>
  
- ### Dashboard
+### Dashboard
 <p> Once you login, you see your dashboard </p>
-<p align="center"><img width="700" src="./assets/Dashboard Page.png"></p>
+<p align="center"><img width="700" src="./assets/dashboard.png"></p>
+
+### Dashboard Filters
+<p> Dashboard's tasks listed can be filtered and viewed as per the user requirements. </p>
+<p align="center"><img width="700" src="./assets/filter.png"></p>
 
 ### User Interface About Page
 <p> When you click on the about on the navigation bar, you are redicrected to a page that consists information about Simplii </p>
-<p align="center"><img width="700" src="./assets/About Page.png"></p>
+<p align="center"><img width="700" src="./assets/about.png"></p>
 
 ### Add Task Page
 <p> When you click on the add task on the navigation bar, you are redicrected to a page that consists of a form. Here, you can fill the details regarding the task you want to add and click on add task. The task is added to the database and you can view it on the dashboard </p>
-<p align="center"><img width="700" src="./assets/Task Page.png"></p>
+<p align="center"><img width="700" src="./assets/add task.png"></p>
 
 ### Edit Task Page
 <p> When you view the task on the dashboard, you can see the option to edit the task details. When you click on edit, the edit task form opens up and you can make necessary changes to the task details and update them. </p>
-<p align="center"><img width="700" src="./assets/Edit Page.png"></p>
+<p align="center"><img width="700" src="./assets/update task.png"></p>
 
 ### Deadlines
 <p> When you click on the deadline tab on the navigation bar, you are redirected to the deadlines page. This page consists of all your tasks in the order of earliest due to the farthest due. In this page you can also choose a date and get an email regarding the tasks that are due within the date chosen. </p>
-<p align="center"><img width="700" src="./assets/deadlines 1.jpeg"></p>
+<p align="center"><img width="700" src="./assets/deadlines.png"></p>
 
-### Tasks Due Email
-<p> When you choose a date and click on get email, you get an email regarding the tasks due. A sample of the email is shown below. </p>
-<p align="center"><img width="700" src="./assets/Tasks Due email.png"></p>
+### Kanban Board
+<p> Categorize tasks into swimlanes based on different criteria like team, priority, or project phase. Enable users to define their own task workflow stages. </p>
+<p align="center"><img width="700" src="./assets/kanbanBoard.png"></p>
 
-### Mail for Password Reset Link
-<p> Another new feature that has been added is the forgot password. When you click on forget password, you recieve a password reset link to your email. A sample email is shown below. </p>
-<p align="center"><img width="700" src="./assets/Password Reset Link.png"></p>
-
-### Password Reset Successful
-<p> When you click on the link sent to you via email, you are redirected to a password reset page and once you click on reset, you are directed to the login page and the following message is displayed showing a successful password change. </p>
-<p align="center"><img width="700" src="./assets/PasswordResetSuccessful.png"></p>
+### Reminders Scheduled
+<p> Can schedule the reminder to be set on a particular date and time and shows in its own reminders scheduled page </p>
+<p align="center"><img width="700" src="./assets/schedule reminder.png"></p>
+<p align="center"><img width="700" src="./assets/reminders.png"></p>
 
 ### MongoDB Users Table
 <p> For Simplii we used MongoDB for backend. The following image shows how the users details are stored in the database.</p>
-<p align="center"><img width="700" src="./assets/MongoDB Compass Users Table.png"></p>
+<p align="center"><img width="700" src="./assets/mongodb users.png"></p>
 
 ### MongoDB Tasks Table
 <p> For each user, we store their tasks in the database. The following image shows how the tasks are stored in the database. </p>
-<p align="center"><img width="700" src="./assets/MongoDB Compass Tasks Table.png"></p>
+<p align="center"><img width="700" src="./assets/mongodb tasks.png"></p>
+
+### MongoDB Reminders Table
+<p> For each user, we store their task's reminder as a table in the database. The following image shows how the reminders scheduled as stored in the database. </p>
+<p align="center"><img width="700" src="./assets/mongodb reminders.png"></p>
  
- 
+
 ## Steps for execution
  
  Step 1:
