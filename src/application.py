@@ -332,10 +332,12 @@ def dashboard():
     # reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
     if session.get('user_id'):
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
+        task_list = []
         for task in tasks:
             print(task)
-            task["gcal_date"] = format_gcal_date(task.get('startdate'),task.get('duedate'))
-    return render_template('dashboard.html', tasks=tasks)
+            task["gcal_link"] = format_gcal_date(task.get('taskname'),task.get('startdate'),task.get('duedate'))
+            task_list.append(task)
+    return render_template('dashboard.html', tasks=task_list)
 
 @app.route("/gpt", methods=['GET', 'POST'])
 def gpt():
