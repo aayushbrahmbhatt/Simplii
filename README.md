@@ -31,7 +31,9 @@
 
 Simplii is a versatile task management application available on both web and Android platforms. It offers a seamless experience for managing tasks efficiently.
 
-# App Hosted in [152.7.176.58:8080](152.7.176.58:8080) 
+# App Hosting
+
+App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 
 ## Link to Demonstration Video of the Project: 
 
