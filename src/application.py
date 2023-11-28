@@ -328,7 +328,7 @@ def dashboard():
     # Output: Our function will redirect to the dashboard page with user tasks being displayed
     # ##########################
     tasks = ''
-    reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
+    # reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
     if session.get('user_id'):
         tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
     return render_template('dashboard.html', tasks=tasks)
