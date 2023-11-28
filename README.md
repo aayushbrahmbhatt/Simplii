@@ -33,8 +33,7 @@ Simplii is a versatile task management application available on both web and And
 
 ## Link to Demonstration Video of the Project: 
 
-
-
+<a href="https://www.youtube.com/watch?v=PZtG0tiJfAg" target="blank">https://www.youtube.com/watch?v=PZtG0tiJfAg</a>
 
 # Table of Contents  
 
@@ -46,15 +45,16 @@ Simplii is a versatile task management application available on both web and And
   - [Welcome Email](#welcome-email)
   - [Login](#login)
   - [Dashboard](#dashboard)
+  - [Dashbord Filters](#dashboard-filters)
   - [About Page](#about-page)
   - [Add Task Page](#add-task-page)
   - [Edit Task Page](#edit-task-page)
   - [Deadlines](#deadlines)
-  - [Tasks Due email](#tasks-due-email)
-  - [Mail for Password Reset Link](#mail-for-password-reset-link)
-  - [Password Reset Successful](#password-reset-successful)
+  - [Kanban Board](#kanban-board)
+  - [Reminder Schedule](#reminder-schedule)
   - [MongoDB Users Table](#mongodb-users-table)
   - [MongoDB Tasks Table](#mongodb-tasks-table)
+  - [MongoDB Reminders Table](#mongodb-reminders-table)
 - [Steps for Execution:](#steps-for-execution)
 - [Source Code](#source-code)
 - [Delta](#delta)
@@ -129,7 +129,7 @@ Simplii is a versatile task management application available on both web and And
 
 ### Deadlines
 <p> When you click on the deadline tab on the navigation bar, you are redirected to the deadlines page. This page consists of all your tasks in the order of earliest due to the farthest due. In this page you can also choose a date and get an email regarding the tasks that are due within the date chosen. </p>
-<p align="center"><img width="700" src="./assets/deadlines.png"></p>
+<p align="center"><img width="700" src="./assets/recommend.png"></p>
 
 ### Kanban Board
 <p> Categorize tasks into swimlanes based on different criteria like team, priority, or project phase. Enable users to define their own task workflow stages. </p>
@@ -151,9 +151,30 @@ Simplii is a versatile task management application available on both web and And
 ### MongoDB Reminders Table
 <p> For each user, we store their task's reminder as a table in the database. The following image shows how the reminders scheduled as stored in the database. </p>
 <p align="center"><img width="700" src="./assets/mongodb reminders.png"></p>
- 
 
-## Steps for execution
+### Android App Tasks 
+
+<p> The woking of the whole Android Simplii app</p>
+https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/30a98409-fdc3-4a8a-a615-30d45000b1d2
+<br>
+
+<p> Reminders are scheduled and can be seen. </p>
+<p align="center"><img height="500" src="./assets/reminderAndroid.jpg"></p>
+<br>
+
+<p> Receives app notifictions too. </p>
+<p align="center"><img height="500" src="./assets/notification.jpg"></p>
+<br>
+
+<p> The working of the Tudum - Smart Assistant</p>
+https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/bb179a18-e63e-47b8-827e-698ba0518241
+<br>
+
+### API documentation
+<a href="https://documenter.getpostman.com/view/30668487/2s9YeEcsTd">API docs</a>
+<br>
+
+## Steps for execution of Web-app
  
  Step 1:
  Install MongoDB using the following link:
@@ -163,11 +184,11 @@ Simplii is a versatile task management application available on both web and And
  Step 2: 
   Git Clone the Repository 
   
-    git clone https://github.com/prateeksingamsetty/Simplii.git
+    git clone https://github.com/SaikrishnaRajaraman/Simplii.git
     
   (OR) Download the .zip file on your local machine
   
-    https://github.com/prateeksingamsetty/Simplii.git
+    https://github.com/SaikrishnaRajaraman/Simplii.git
   
  Step 3:
    Install the required packages by running the following command in the terminal 
@@ -177,53 +198,74 @@ Simplii is a versatile task management application available on both web and And
  Step 4:
     Run the following command in the terminal
     
-    python application.py
+    python src/application.py
     
  Step 5:
     Open the URL in your browser:  
       http://127.0.0.1:5000/
-      
-## Source Code
-  
-  Link to the repository:
-    https://github.com/prateeksingamsetty/Simplii.git
-                                                                                                                                                  
+
+## Steps for execution of Chrome extension
+
+ Step 1:
+ Open web browser and go to the following link:
  
+     chrome://extensions/
+
+ Step 2: 
+  Trun on the developer mode on top right corner and click on "Load unpacked" button on top left corner. Upload the <a href="https://github.com/SaikrishnaRajaraman/Simplii/tree/main/src/Simplii_chrome_extension"> Simplii_chrome_extension </a> from your cloned repository in the local disk.
+  
+  
+ Step 3:
+   Extension is succefully added and you can access it by the extensions icon on top-right corner on the browser webpage. 
+
+
+            https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/61bd2fc5-4b90-4000-a84d-c21a4783a450
+
+![img](https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/8e9526bc-5a3a-48e4-8d85-82a5ef52425e)<br><br>
+![img](https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/01c6644c-f604-4ac2-88ec-0fcf82d7799e)
+
+                                                                                                                                      
+
   ## Delta
  
- <b> a) Welcome email</b>
-        <li>The earlier version of Simplii had a register functionality. After registering user can continue to login.
-        <li>In our updated version of Simplii, after the user registers, he/she is redirected to login. However, they also recieve a welcome email from team Simplii.
+ <b> a) Android App development: </b> Developed an Android app with same functionalities.
+ 
+ <b> b) Reminder Schedule: </b> Provided each task with a remider schedule option where the user can set the remider date and time.
     
- <b>b) Forgot Password Functionality</b>
-        <li>In the previous version of Simplii, there was no forgot password option
-        <li>In our updated version of Simplii, we have the forgot password functionality and an email is sent to the user with a link to reset their password.
-    
- <b>c) Recommendations Tab has been changed to Deadlines Tab.</b>
-        <li>In the previous version of Simplii, there was a recommendation tab that showed upcoming tasks. However it was hardcoded.
-        <li>In our updated version of Simplii, we changed the recommendation tab to deadlines tab. User can view upcoming tasks based on the date they choose and can recieve email consisting of upcoming dues within the date chosen</b>
+ <b> c) Kanban Board: </b> Added kanban board like functionality to organize the tasks based on Status.
+
+ <b> d) Syncing task to Google calender: </b> Set a button to add the particular task to your Google Canlender.
+
+ <b> e) Tudum - Smart Assistant: </b> Integrated with openAI to provide result based on user query which can be directly added to the Task board or To-Do list if needed. Implemented in the Android app.
+
+ <b> f) Hosted on VCL: </b> The application is hosted on NCSU VCL.
+
+ <b> g) Improved sort filters: </b> User is now able to sort tasks based on caterogy, status and manage the number of tasks shown.
+
+ <b> h) Chrome extension: </b> Developed a Chrome extension to store the tasks and deleted it when completed. Made use of localstorage to store the tasks here.
         
-    
+   ## Third party dependencies
+
+   1. OpenAI
+   2. Firebase
+   3. MongoDB
+  
    ## Future Scope
   
   The  following features can be implemented in the future scope of this application:
  
-   1. Add a Scheduler which runs 24/7 and sends Tasks Remainders to the users ever day.
-   2. Allow users to back up their task data and settings, and provide an option to restore their data in case of accidental deletions or device changes.
-   3. Implement a feature that intelligently sorts and prioritizes tasks based on deadlines, importance, or user-defined criteria.
-   4. Enable integration with other popular productivity and communication tools such as calendars (e.g., Google Calendar, Microsoft Outlook), project management software (e.g., Trello, Asana), and messaging apps (e.g., Slack).
-   5. Create a mobile application for the web version of the application.
-   6. Create chatbot for the web portal
-      
-   
+  1. The Tudum Smart assistant can be implemented in the web application.
+  2. Improve the parsing of openAI.
+  3. Imrpove the chrome extension by saving tasks into database tasks list so that it can be access realtime by webpage/app.
+
    
    ## Team Members
    
   <ul style="list-style-type:  '- ' ; padding: 0;">
-  <li><a href="https://github.com/shiva1239" style="text-decoration: none; color: black;">Shiva Vara Prasad Kandhagatla</a></li>
-  <li><a href="https://github.com/prateeksingamsetty" style="text-decoration: none; color: black;">Prateek Singamsetty</a></li>
-  <li><a href="https://github.com/laasya2704" style="text-decoration: none; color: black;">Laasya Choudary Nandamuri </a></li>
-  <li><a href="https://github.com/jramani" style="text-decoration: none; color: black;">Jayanth Ramanidharan</a></li>
+  <li>Chandana Mallu (cmallu)</li>
+  <li>Saikrishna Rajaraman (srajara4)</li>
+  <li>Sidharth Anand (sanand8)</li>
+  <li>Tripurashree Mysore Manjunatha (tmysore)</li>
 </ul>
 
   ## Contribution
