@@ -1,12 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
-    <form id="searchQuery" action="gpt.html" method="get">
-        <label >Search:</label>
-        <input type="text" id="search" name="query" placeholder="Enter your search term">
-        <button type="submit" onclick="search()">Search</button>
-    </form>
-</div>
 <div class="card status-card col-md" style="width: auto;">
     <div class="card-body">
         <h3 class="card-title" style="text-align: center;">All Tasks</h3>
@@ -131,7 +124,7 @@
                 <th>Due Date</th>
                 <th>Edit</th>
                 <th>Delete</th>
-                <th>Send Remainders</th>
+                <th>Send Reminders</th>
                 <th>Add Google Calendar</th>
             </tr>
         </thead>
@@ -151,9 +144,9 @@
                 <td>{{ item['duedate'] }}</td>
                 <td style="text-align: center;"><button class='editButton'>Edit</button></td>
                 <td style="text-align: center;"><button class='deleteButton'>Delete</button></td>
-
                 <td style="text-align: center;"><button class='reminderButton'>Send Remainder</button></td>
                 <td style="text-align:center;"><a href="{{ item.gcal_link }}">Add to my calendar</a></td>
+
 
                 
             </tr>
