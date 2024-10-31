@@ -31,7 +31,14 @@ import openai
 import asyncio
 from openai import AsyncOpenAI
 from utils import format_gcal_date
+#added this here
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 
+class OTPForm(FlaskForm):
+    otp = StringField('Enter OTP', validators=[DataRequired()])
+    submit = SubmitField('Verify')
 from flask_login import LoginManager, login_required
 
 from firebase_config import auth
@@ -320,7 +327,6 @@ def send_email_reminders():
     else:
         return redirect(url_for('home'))
 
-
 @app.route("/dashboard")
 def dashboard():
     ############################
@@ -328,17 +334,23 @@ def dashboard():
     # route "/dashboard" will redirect to dashboard() function.
     # input: The function takes session as the input and fetches user tasks from Database
     # Output: Our function will redirect to the dashboard page with user tasks being displayed
-    # ##########################
-    tasks = ''
-    # reply = asyncio.run(chatgptquery("What are the steps to open a bank account?"))
-    if session.get('user_id'):
-        tasks = mongo.db.tasks.find({'user_id': ObjectId(session.get('user_id'))})
+    ############################
+    # Check if user is logged in; if not, redirect to login
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    try:
+        # Fetch user tasks if session is valid
+        tasks = mongo.db.tasks.find({'user_id': ObjectId(session['user_id'])})
         task_list = []
         for task in tasks:
-            print(task)
-            task["gcal_link"] = format_gcal_date(task.get('taskname'),task.get('startdate'),task.get('duedate'))
+            task["gcal_link"] = format_gcal_date(task.get('taskname'), task.get('startdate'), task.get('duedate'))
             task_list.append(task)
-    return render_template('dashboard.html', tasks=task_list)
+
+        return render_template('dashboard.html', tasks=task_list)
+    except Exception as e:
+        print(f"Error fetching tasks: {e}")
+        return redirect(url_for('login'))
 
 @app.route("/gpt", methods=['GET', 'POST'])
 def gpt():
@@ -417,6 +429,40 @@ def reminderscheduled():
 #         return redirect(url_for('home'))
 #     return render_template('register.html', title='Register', form=form)
 
+# @app.route("/register", methods=['GET', 'POST'])
+# def register():
+#     # ############################
+#     # register() function displays the Registration portal (register.html) template
+#     # route "/register" will redirect to register() function.
+#     # RegistrationForm() called and if the form is submitted then various values are fetched and updated into database
+#     # Input: Username, Email, Password, Confirm Password
+#     # Output: Value update in database and redirected to home login page
+#     # ##########################
+#     if not session.get('email'):
+#         form = RegistrationForm()
+#         if form.validate_on_submit():
+#             if request.method == 'POST':
+#                 username = request.form.get('username')
+#                 email = request.form.get('email')
+#                 password = request.form.get('password')
+#                 mongo.db.users.insert_one({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
+#                     password.encode("utf-8"), bcrypt.gensalt()), 'tasksList':[], 'temp': None})
+#                 auth.create_user_with_email_and_password(email, password)
+#                 msg = Message('Welcome to Simplii: Your Task Scheduling Companion', sender='dummysinghhh@gmail.com', recipients=[email])
+#                 msg.body = f"Hey {username},\n\n" \
+#                 "We're excited to welcome you to Simplii, your new task scheduling companion. Simplii is here to help you stay organized, meet deadlines, and achieve your goals efficiently.\n\n" \
+#                 "With Simplii, you can schedule your tasks, set deadlines, and work on them with ease. Never miss an important deadline again!\n\n" \
+#                 "Thank you for choosing Simplii. We're thrilled to have you on board. If you have any questions or need assistance, feel free to reach out to us.\n\n" \
+#                 "Best regards,\n" \
+#                 "The Simplii Team"
+#                 mail.send(msg)
+#                 print("Message sent!")
+#                 flash(f'Account created for {form.username.data}!', 'success')
+#                 return redirect(url_for('home'))
+#     else:
+#         return redirect(url_for('home'))
+#     return render_template('register.html', title='Register', form=form)
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -452,32 +498,30 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
-# OTP Verification Route
 @app.route("/otp_verification", methods=['GET', 'POST'])
 def otp_verification():
+    # Redirect to login if no email in session
     if 'email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
 
-    if request.method == 'POST':
-        otp_entered = request.form.get('otp')
+    # Initialize the form
+    form = OTPForm()
+
+    # Validate form submission
+    if form.validate_on_submit():  # Check if form was submitted and is valid
+        otp_entered = form.otp.data
         user = mongo.db.users.find_one({'email': session['email']})
 
         if user and user['otp'] == int(otp_entered):  # OTP matches
-            # Update user verification status
             mongo.db.users.update_one({'email': session['email']}, {'$set': {'is_verified': True, 'otp': None}})
-            
-            # Initialize session or any additional setup
             session['user'] = user['name']
             flash('Your account has been verified successfully!', 'success')
-            
-            # Redirect to the home page or dashboard
-            return redirect(url_for('home'))
+            return redirect(url_for('dashboard'))
         else:
             flash('Invalid OTP. Please try again.', 'danger')
 
-    return render_template('otp_verification.html', title='OTP Verification')
-
-
+    # Render the template with the form
+    return render_template('otp_verification.html', title='OTP Verification', form=form)
 
 @app.route("/deleteTask", methods=['GET', 'POST'])
 def deleteTask():
