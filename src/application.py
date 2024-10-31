@@ -9,6 +9,8 @@ import time
 import atexit
 import os
 import random
+import requests
+from flask import Flask, request, render_template, jsonify
 from openai import OpenAI
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -59,6 +61,8 @@ mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.secret_key, salt='password-reset')
 
 scheduler = BackgroundScheduler()
+
+GEMINI_API_KEY = "AIzaSyAJksXpRxDQRV6iz_wW3Op95wlfoJjosYc"
 
 def fetch_tasks():
     print("fetch_tasks called")
@@ -201,6 +205,30 @@ def forgotPassword():
     else:
         return redirect(url_for('home'))
     return render_template('forgotPassword.html', title='Register', form=form)
+
+
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'POST':
+        user_input = request.form['user_input']
+        
+        gemini_prompt = f"Provide a detailed and engaging response to the following question: {user_input}"
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GEMINI_API_KEY}"
+        headers = {"Content-Type": "application/json"}
+        data = {
+            "contents": [{"parts": [{"text": gemini_prompt}]}]
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+        if response.status_code == 200:
+            chatbot_response = response.json()['candidates'][0]['content']['parts'][0]['text']
+            return render_template('chatbot.html', user_input=user_input, chatbot_response=chatbot_response)
+        else:
+            return jsonify({"error": "Failed to fetch response from Gemini API."}), 500
+
+    return render_template('chatbot.html')
+
 
 
 @app.route("/recommend")
