@@ -207,6 +207,44 @@ def forgotPassword():
     return render_template('forgotPassword.html', title='Register', form=form)
 
 
+# @app.route('/chatbot', methods=['GET', 'POST'])
+# def chatbot():
+#     if request.method == 'POST':
+#         user_input = request.form['user_input']
+        
+#         # Generate a prompt based on user input
+#         prompt = f"User task-related query: {user_input}. Provide task management insights or assistance."
+
+#         # Call Gemini API
+#         response = call_gemini_api(prompt)
+        
+#         # Return the response to the frontend as JSON
+#         return jsonify(response=response)
+    
+#     # Render chatbot page template
+#     return render_template('chatbot.html')
+
+# def call_gemini_api(prompt):
+#     # Gemini API headers and data payload
+#     headers = {
+#         "Authorization": f"Bearer {GEMINI_API_KEY}",
+#         "Content-Type": "application/json"
+#     }
+#     data = {
+#         "prompt": prompt,
+#         "model": "gemini"  # specify model as needed
+#     }
+    
+#     # Make the API request to Gemini
+#     response = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GEMINI_API_KEY}", headers=headers, json=data)
+    
+#     # Check for a valid response
+#     if response.status_code == 200:
+#         return response.json().get("response", "Sorry, I didn't understand that.")
+#     else:
+#         return "There was an error processing your request."
+
+
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if request.method == 'POST':
