@@ -1,7 +1,7 @@
 # test_application.py
 
 import pytest
-from app import app, mongo
+from src.application import app, mongo
 from flask import session
 
 @pytest.fixture
