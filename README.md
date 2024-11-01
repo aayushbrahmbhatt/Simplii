@@ -109,7 +109,7 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 
 ### Email Verfication using Regex
 <p>Check if the Email is valid or not.</p>
-
+<p align="center"><img width="700" src="./assets/Regex.png"></p>
 ### OTP verification
 <p>OTP is sent to the email ID of the User trying to login and it is verified.</p>
 <p align="center"><img width="700" src="./assets/OTP.png"></p>
