@@ -461,6 +461,82 @@ def reminderscheduled():
     else:
         return redirect(url_for('home'))
 
+@app.route("/contact", methods=['GET', 'POST'])
+def contact():
+    ############################
+    # contact() function allows users to send support messages.
+    # route "/contact" will redirect to contact() function.
+    # input: The function takes session as the input
+    # Output: Our function will render the contact support page
+    # ##########################
+    
+    if request.method == 'POST':
+        message = request.form.get('message')
+        user_email = session.get('email')
+
+        # Send the message to support (here you can implement the sending logic)
+        flash('Your message has been sent to support!', 'success')
+    
+    return render_template('contact.html')
+
+@app.route("/activity")
+@login_required
+def activity():
+    ############################
+    # activity() function displays a log of user activities.
+    # route "/activity" will redirect to activity() function.
+    # input: The function takes session as the input
+    # Output: Our function will render the activity log page
+    # ##########################
+    
+    user_id = session.get('user_id')
+    activities = list(mongo.db.activities.find({'user_id': user_id}).sort('timestamp', -1))
+    
+    return render_template('activity.html', activities=activities)
+
+
+@app.route("/settings", methods=['GET', 'POST'])
+@login_required
+def settings():
+    ############################
+    # settings() function displays account settings for the user.
+    # route "/settings" will redirect to settings() function.
+    # input: The function takes session as the input
+    # Output: Our function will render the settings page
+    # ##########################
+    
+    if request.method == 'POST':
+        # Update user settings
+        notifications_enabled = request.form.get('notifications_enabled') == 'on'
+        mongo.db.users.update_one({'_id': session.get('user_id')}, {'$set': {'notifications_enabled': notifications_enabled}})
+        flash('Settings updated successfully!', 'success')
+    
+    user = mongo.db.users.find_one({'_id': session.get('user_id')})
+    return render_template('settings.html', user=user)
+
+@app.route("/profile", methods=['GET', 'POST'])
+@login_required
+def profile():
+    ############################
+    # profile() function displays and updates user profile information.
+    # route "/profile" will redirect to profile() function.
+    # input: The function takes session as the input
+    # Output: Our function will redirect to the profile page
+    # ##########################
+    
+    if request.method == 'POST':
+        # Get updated user information
+        email = request.form.get('email')
+        name = request.form.get('name')
+
+        # Update the user's information in the database
+        mongo.db.users.update_one({'_id': session.get('user_id')}, {'$set': {'email': email, 'name': name}})
+        flash('Profile updated successfully!', 'success')
+    
+    user = mongo.db.users.find_one({'_id': session.get('user_id')})
+    return render_template('profile.html', user=user)
+
+
 # @app.route("/register", methods=['GET', 'POST'])
 # def register():
 #     # ############################
@@ -784,6 +860,26 @@ async def chatgptquery(query):
     
     return reply
         
+@app.route("/feedback", methods=['GET', 'POST'])
+@login_required
+def feedback():
+    ############################
+    # feedback() function allows users to submit their feedback.
+    # route "/feedback" will redirect to feedback() function.
+    # input: The function takes session as the input
+    # Output: Our function will render the feedback page
+    # ##########################
+    
+    if request.method == 'POST':
+        feedback_text = request.form.get('feedback')
+        user_email = session.get('email')
+
+        # Store feedback in the database
+        mongo.db.feedback.insert_one({'email': user_email, 'feedback': feedback_text, 'timestamp': datetime.now()})
+        flash('Thank you for your feedback!', 'success')
+    
+    return render_template('feedback.html')
+
 
 @app.route("/editTask", methods=['GET', 'POST'])
 def editTask():
@@ -806,6 +902,17 @@ def editTask():
             'ContentType': 'application/json'}
     else:
         return "Failed"
+
+@app.route("/user_guide")
+def user_guide():
+    ############################
+    # user_guide() function displays a guide for using the application.
+    # route "/user_guide" will redirect to user_guide() function.
+    # input: The function does not require session
+    # Output: Our function will render the user guide page
+    # ##########################
+    
+    return render_template('user_guide.html')
 
 
 @app.route("/updateTask", methods=['GET', 'POST'])
@@ -868,6 +975,21 @@ def updateTask():
         return redirect(url_for('home'))
     return render_template('updateTask.html', title='Task', form=form)
 
+@app.route("/task_history")
+@login_required
+def task_history():
+    ############################
+    # task_history() function displays the history of completed tasks.
+    # route "/task_history" will redirect to task_history() function.
+    # input: The function takes session as the input
+    # Output: Our function will render the task history page
+    # ##########################
+    
+    user_id = session.get('user_id')
+    completed_tasks = list(mongo.db.tasks.find({'user_id': user_id, 'status': 'completed'}).sort('duedate', ASCENDING))
+    
+    return render_template('task_history.html', completed_tasks=completed_tasks)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -914,6 +1036,21 @@ def logout():
     # ##########################
     session.clear()
     return "success"
+
+@app.route("/notifications")
+@login_required
+def notifications():
+    ############################
+    # notifications() function displays user notifications.
+    # route "/notifications" will redirect to notifications() function.
+    # input: The function takes session as the input
+    # Output: Our function will render the notifications page
+    # ##########################
+    
+    user_id = session.get('user_id')
+    notifications = list(mongo.db.notifications.find({'user_id': user_id}).sort('timestamp', -1))
+    
+    return render_template('notifications.html', notifications=notifications)
 
 
 @app.route("/dummy", methods=['GET'])

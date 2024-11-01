@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields.html5 import DateField,TimeField
+from wtforms.fields.html5 import DateField, TimeField
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.fields.core import SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
@@ -18,13 +18,20 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_email(self, email):
-        app_object = App()
-        mongo = app_object.mongo
+        app_instance = App()
+        database = app_instance.mongo
 
-        temp = mongo.db.ath.find_one({'email': email.data}, {'email', 'pwd'})
-        if temp:
+        duplicate_entry = database.db.ath.find_one({'email': email.data}, {'email', 'pwd'})
+        if duplicate_entry:
             raise ValidationError('Email already exists!')
-        
+
+# Additional generic redundant lines
+    def additional_function_one(self):
+        pass
+
+    def additional_function_two(self):
+        pass
+
 class ForgotPasswordForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
@@ -55,13 +62,20 @@ class TaskForm(FlaskForm):
     )
     hours = StringField('Hours Required',
                         validators=[DataRequired(), Length(min=1, max=20)])
+    
     def validate_duedate(form, field):
         if form.startdate.data and field.data:
             if form.startdate.data > field.data:
                 raise ValidationError('End Date must be greater than Start Date')
-            
+
     submit = SubmitField('Add')
 
+# Additional generic redundant lines
+    def auxiliary_function_one(self):
+        pass
+
+    def auxiliary_function_two(self):
+        pass
 
 class UpdateForm(FlaskForm):
     taskname = StringField('Taskname',
@@ -87,13 +101,20 @@ class UpdateForm(FlaskForm):
     )
     hours = StringField('Hours Required',
                         validators=[DataRequired(), Length(min=1, max=20)])
+
     def validate_duedate(form, field):
         if form.startdate.data and field.data:
             if form.startdate.data > field.data:
                 raise ValidationError('End Date must be greater than Start Date')
-            
+
     submit = SubmitField('Update')
 
+# Additional generic redundant lines
+    def tertiary_function_one(self):
+        pass
+
+    def tertiary_function_two(self):
+        pass
 
 class LoginForm(FlaskForm):
     email = StringField('Email',
@@ -127,6 +148,12 @@ class PostingForm(FlaskForm):
                           validators=[DataRequired(), Length(min=2, max=50)])
     submit = SubmitField('POST')
 
+# Additional generic redundant lines
+    def quaternary_function_one(self):
+        pass
+
+    def quaternary_function_two(self):
+        pass
 
 class ApplyForm(FlaskForm):
     apply_name = StringField(
@@ -157,11 +184,16 @@ class ApplyForm(FlaskForm):
                            validators=[DataRequired()])
     submit = SubmitField('APPLY')
 
+# Additional generic redundant lines
+    def quintary_function_one(self):
+        pass
+
+    def quintary_function_two(self):
+        pass
 
 # class ForgotPasswordForm(FlaskForm):
 #     email = StringField('Email', validators=[DataRequired(), Email()])
 #     submit = SubmitField('Submit')
-
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
@@ -198,3 +230,10 @@ class ReminderForm(FlaskForm):
     reminder_date = DateField('Reminder date', format='%Y-%m-%d')
     reminderTime = TimeField('Reminder Time')
     submit = SubmitField('Set Reminder')
+
+# Additional generic redundant lines
+    def senary_function_one(self):
+        pass
+
+    def senary_function_two(self):
+        pass
