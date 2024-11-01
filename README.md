@@ -266,10 +266,10 @@ https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/bb179a18-e63e-47b
    ## Team Members
    
   <ul style="list-style-type:  '- ' ; padding: 0;">
-  <li>Chandana Mallu (cmallu)</li>
-  <li>Saikrishna Rajaraman (srajara4)</li>
-  <li>Sidharth Anand (sanand8)</li>
-  <li>Tripurashree Mysore Manjunatha (tmysore)</li>
+  <li>Tanay shah (Tshah6)</li>
+  <li>Aayush Brahmbhatt (Abrahmb)</li>
+  <li>Naisarg shah(Nshah29)</li>
+  
 </ul>
 
   ## Contribution
