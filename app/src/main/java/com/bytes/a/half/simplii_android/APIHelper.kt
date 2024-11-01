@@ -13,109 +13,78 @@ import java.util.concurrent.TimeUnit
 
 object APIHelper {
 
-    fun getInstance(): Retrofit {
+    fun createRetrofitInstance(): Retrofit {
         val httpClientBuilder = OkHttpClient.Builder().addInterceptor(Interceptor { chain ->
-            val request =
-                chain.request().newBuilder().addHeader("Content-Type", "application/json").build()
-            chain.proceed(request)
+            val modifiedRequest = chain.request().newBuilder()
+                .addHeader("Content-Type", "application/json").build()
+            chain.proceed(modifiedRequest)
         })
         httpClientBuilder.readTimeout(60, TimeUnit.SECONDS)
         httpClientBuilder.connectTimeout(60, TimeUnit.SECONDS)
-        val httpClient = httpClientBuilder.build()
-        return Retrofit.Builder().baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create()).client(httpClient)
-            // we need to add converter factory to
-            // convert JSON object to Java object
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClientBuilder.build())
             .build()
     }
 
-    fun addTask(task: Task) {
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val tasksReference = FirebaseUtils.database.child("tasks").child(userId!!)
-            val reference = tasksReference.push()
-            task.id = reference.key
-            val tasks: HashMap<String, Task> = HashMap()
-            tasks[task.id!!] = task
-            tasksReference.updateChildren(tasks as Map<String, Any>)
+    fun saveTask(task: Task) {
+        FirebaseUtils.auth.uid?.let { userId ->
+            val taskReference = FirebaseUtils.database.child("tasks").child(userId).push()
+            task.id = taskReference.key
+            taskReference.updateChildren(mapOf(task.id!! to task))
         }
     }
 
-
-    fun addReminder(reminder: Reminder) {
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val tasksReference = FirebaseUtils.database.child("reminders").child(userId!!)
-            val reference = tasksReference.push()
-            reminder.id = reference.key
-            val reminders: HashMap<String, Reminder> = HashMap()
-            reminders[reminder.id!!] = reminder
-            tasksReference.updateChildren(reminders as Map<String, Any>)
+    fun saveReminder(reminder: Reminder) {
+        FirebaseUtils.auth.uid?.let { userId ->
+            val reminderReference = FirebaseUtils.database.child("reminders").child(userId).push()
+            reminder.id = reminderReference.key
+            reminderReference.updateChildren(mapOf(reminder.id!! to reminder))
         }
     }
 
-    fun updateTaskStatus(task: Task) {
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val tasksReference = FirebaseUtils.database.child("tasks").child(userId!!)
-            val tasks: HashMap<String, Task> = HashMap()
-            tasks[task.id!!] = task
-            tasksReference.updateChildren(tasks as Map<String, Any>)
+    fun modifyTaskStatus(task: Task) {
+        FirebaseUtils.auth.uid?.let { userId ->
+            FirebaseUtils.database.child("tasks").child(userId).updateChildren(mapOf(task.id!! to task))
         }
     }
 
-
-    fun deleteTask(task: Task) {
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val tasksReference = FirebaseUtils.database.child("tasks").child(userId!!)
-            if (task.id.isValidString()) {
-                tasksReference.child(task.id!!).removeValue()
+    fun removeTask(task: Task) {
+        FirebaseUtils.auth.uid?.let { userId ->
+            task.id?.let {
+                FirebaseUtils.database.child("tasks").child(userId).child(it).removeValue()
             }
         }
     }
 
-    fun deleteReminder(reminder: Reminder) {
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val reminderReference = FirebaseUtils.database.child("reminders").child(userId!!)
-            if (reminder.id.isValidString()) {
-                reminderReference.child(reminder.id!!).removeValue()
+    fun removeReminder(reminder: Reminder) {
+        FirebaseUtils.auth.uid?.let { userId ->
+            reminder.id?.let {
+                FirebaseUtils.database.child("reminders").child(userId).child(it).removeValue()
             }
         }
     }
 
-    suspend fun getTasks(): ArrayList<Task> {
-        val tasksList = ArrayList<Task>()
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val tasksReference = FirebaseUtils.database.child("tasks").child(userId!!)
-            val taskSnapshots = tasksReference.get().await()
-            for (snapshot in taskSnapshots.children) {
-                val task = snapshot.getValue(Task::class.java)
-                if (task != null) {
-                    tasksList.add(task)
-                }
+    suspend fun fetchTasks(): ArrayList<Task> {
+        val taskList = ArrayList<Task>()
+        FirebaseUtils.auth.uid?.let { userId ->
+            val snapshot = FirebaseUtils.database.child("tasks").child(userId).get().await()
+            for (child in snapshot.children) {
+                child.getValue(Task::class.java)?.let { taskList.add(it) }
             }
         }
-        return tasksList
+        return taskList
     }
 
-    suspend fun getReminders(): ArrayList<Reminder> {
-        val reminders = ArrayList<Reminder>()
-        val userId = FirebaseUtils.auth.uid
-        if (userId.isValidString()) {
-            val remindersReference = FirebaseUtils.database.child("reminders").child(userId!!)
-            val reminderSnapshots = remindersReference.get().await()
-            for (snapshot in reminderSnapshots.children) {
-                val task = snapshot.getValue(Reminder::class.java)
-                if (task != null) {
-                    reminders.add(task)
-                }
+    suspend fun fetchReminders(): ArrayList<Reminder> {
+        val reminderList = ArrayList<Reminder>()
+        FirebaseUtils.auth.uid?.let { userId ->
+            val snapshot = FirebaseUtils.database.child("reminders").child(userId).get().await()
+            for (child in snapshot.children) {
+                child.getValue(Reminder::class.java)?.let { reminderList.add(it) }
             }
         }
-        return reminders
+        return reminderList
     }
-
-
 }
