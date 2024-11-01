@@ -110,10 +110,12 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 ### Email Verfication using Regex
 <p>Check if the Email is valid or not.</p>
 <p align="center"><img width="700" src="./assets/Regex.png"></p>
+
 ### OTP verification
 <p>OTP is sent to the email ID of the User trying to login and it is verified.</p>
 <p align="center"><img width="700" src="./assets/OTP.png"></p>
 <p align="center"><img width="700" src="assets/otp1.jpg"></p>
+<p align="center"><img width="700" src="assets/otp sent.jpg"></p>
  
 ### User Interface Login 
 <p> Once you create an account, you can login to the website using your credentials </p>
@@ -138,6 +140,11 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 ### Edit Task Page
 <p> When you view the task on the dashboard, you can see the option to edit the task details. When you click on edit, the edit task form opens up and you can make necessary changes to the task details and update them. </p>
 <p align="center"><img width="700" src="./assets/update task.png"></p>
+
+### Chatbot Integrated
+<p>Chatbot is implemented as a new featur which will guide to manage your task and assist you with any queries related to the chatbot</p>
+<p align="center"><img width="700" src="./assets/chatbot.jpg"></p>
+<p align="center"><img width="700" src="./assets/chatbot example.jpg"></p>
 
 ### Deadlines
 <p> When you click on the deadline tab on the navigation bar, you are redirected to the deadlines page. This page consists of all your tasks in the order of earliest due to the farthest due. In this page you can also choose a date and get an email regarding the tasks that are due within the date chosen. </p>
