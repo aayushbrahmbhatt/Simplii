@@ -1,3 +1,42 @@
+## Rubric for GitHub Repository
+
+| **Notes** | **Evidence** |
+| --- | --- |
+| **Workload is spread over the whole team** (one team member is often X times more productive than others, but all are contributing) | Evidence in GitHub (GH) |
+| **Number of commits** | Number of commits in GH |
+| **Number of commits: by different people** | Commits from multiple contributors in GH |
+| **Issue reports: there are many** | Evidence of issue reports in GH |
+| **Issues are being closed** | Evidence of closed issues in GH |
+| **Docs: documentation generated, well-formatted** | Documentation in GH |
+| **Docs: what** (point descriptions of each class/function) | Detailed function descriptions in docs |
+| **Docs: how** (mini-tutorials on X, Y, Z use cases) | Mini-tutorials in docs |
+| **Docs: why** (motivating story) | Storytelling in documentation |
+| **Docs: short video** (hosted in repo, explaining the project) | Video linked in GH |
+| **Use of version control tools** | Version control used effectively |
+| **Test cases exist** (dozens of tests, more than 30% of codebase) | Test cases in GH |
+| **Test cases are routinely executed** | Test automation in place (e.g., GitHub Actions) |
+| **Issues are discussed before closure** | Issue discussions documented |
+| **Chat channel exists** | Link or screenshots of chat |
+| **Test cases: handle failing cases** | Track failing tests, open issues for fixes |
+| **Team uses the same tools** (evidence that all team members use the same tools and files) | Configuration files and logs in GH |
+| **Short release cycles** | Frequent commits and pull requests in GH |
+| **.gitignore file** (lists files that should not be saved) | `.gitignore` file in GH |
+| **INSTALL.md file** (lists installation instructions) | `INSTALL.md` in GH |
+| **LICENSE.md file** (provides rules of usage) | `LICENSE.md` in GH |
+| **CODE-OF-CONDUCT.md file** (defines rules of behavior) | `CODE-OF-CONDUCT.md` in GH |
+| **CONTRIBUTING.md file** (lists contribution guidelines) | `CONTRIBUTING.md` in GH |
+| **README.md file** (provides project overview, badges) | `README.md` in GH |
+| **Video** (2-min video showing new functionality) | Video linked in GH |
+| **DOI badge exists** (register the project at Zenodo) | DOI badge in `README.md` |
+| **Badges for style checkers** | Style checker badges in `README.md` |
+| **Badges for code formatters** | Code formatter badges in `README.md` |
+| **Badges for syntax checkers** | Syntax checker badges in `README.md` |
+| **Badges for code coverage tools** | Code coverage badges in `README.md` |
+| **Badges for other automated analysis tools** | Other tool badges in `README.md` |
+
+
+
+
 # Simplii - Task Management Web and Android Application
 [![DOI](https://zenodo.org/badge/720901435.svg)](https://zenodo.org/doi/10.5281/zenodo.10212287)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -280,42 +319,7 @@ https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/bb179a18-e63e-47b
   
   This project is licensed under the MIT License.
 
-  ## Rubric for GitHub Repository
-
-| **Notes** | **Evidence** |
-| --- | --- |
-| **Workload is spread over the whole team** (one team member is often X times more productive than others, but all are contributing) | Evidence in GitHub (GH) |
-| **Number of commits** | Number of commits in GH |
-| **Number of commits: by different people** | Commits from multiple contributors in GH |
-| **Issue reports: there are many** | Evidence of issue reports in GH |
-| **Issues are being closed** | Evidence of closed issues in GH |
-| **Docs: documentation generated, well-formatted** | Documentation in GH |
-| **Docs: what** (point descriptions of each class/function) | Detailed function descriptions in docs |
-| **Docs: how** (mini-tutorials on X, Y, Z use cases) | Mini-tutorials in docs |
-| **Docs: why** (motivating story) | Storytelling in documentation |
-| **Docs: short video** (hosted in repo, explaining the project) | Video linked in GH |
-| **Use of version control tools** | Version control used effectively |
-| **Test cases exist** (dozens of tests, more than 30% of codebase) | Test cases in GH |
-| **Test cases are routinely executed** | Test automation in place (e.g., GitHub Actions) |
-| **Issues are discussed before closure** | Issue discussions documented |
-| **Chat channel exists** | Link or screenshots of chat |
-| **Test cases: handle failing cases** | Track failing tests, open issues for fixes |
-| **Team uses the same tools** (evidence that all team members use the same tools and files) | Configuration files and logs in GH |
-| **Short release cycles** | Frequent commits and pull requests in GH |
-| **.gitignore file** (lists files that should not be saved) | `.gitignore` file in GH |
-| **INSTALL.md file** (lists installation instructions) | `INSTALL.md` in GH |
-| **LICENSE.md file** (provides rules of usage) | `LICENSE.md` in GH |
-| **CODE-OF-CONDUCT.md file** (defines rules of behavior) | `CODE-OF-CONDUCT.md` in GH |
-| **CONTRIBUTING.md file** (lists contribution guidelines) | `CONTRIBUTING.md` in GH |
-| **README.md file** (provides project overview, badges) | `README.md` in GH |
-| **Video** (2-min video showing new functionality) | Video linked in GH |
-| **DOI badge exists** (register the project at Zenodo) | DOI badge in `README.md` |
-| **Badges for style checkers** | Style checker badges in `README.md` |
-| **Badges for code formatters** | Code formatter badges in `README.md` |
-| **Badges for syntax checkers** | Syntax checker badges in `README.md` |
-| **Badges for code coverage tools** | Code coverage badges in `README.md` |
-| **Badges for other automated analysis tools** | Other tool badges in `README.md` |
-
+  
 
   
                                                                                                                                                    
