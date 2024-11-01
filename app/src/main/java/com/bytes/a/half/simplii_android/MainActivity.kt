@@ -16,132 +16,104 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class MainActivity : AppCompatActivity() {
-    private val todoItems: MutableList<Task> = mutableStateListOf()
-    private val inProgressItems: MutableList<Task> = mutableStateListOf()
-    private val doneItems: MutableList<Task> = mutableStateListOf()
+    private val todoTasks: MutableList<Task> = mutableStateListOf()
+    private val ongoingTasks: MutableList<Task> = mutableStateListOf()
+    private val completedTasks: MutableList<Task> = mutableStateListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             LaunchedEffect(Unit) {
-                fetchTasks()
+                loadTasks()
             }
-            HomeScreen(todoItems, inProgressItems, doneItems, onSetReminder = { task ->
-                setReminder(task)
+            HomeScreen(todoTasks, ongoingTasks, completedTasks, onSetReminder = { task ->
+                initiateReminder(task)
             }, onShowReminders = {
-                showReminders()
+                displayReminders()
             }, onContextTodos = {
-                openContextTodos()
+                navigateToContextTodos()
             }) {
-                openCreateTask()
+                launchCreateTask()
             }
         }
     }
 
-    private fun openCreateTask() {
+    private fun launchCreateTask() {
         val intent = Intent(this, CreateTaskActivity::class.java)
         startActivityForResult(intent, SimpliiConstants.CREATE_TASK_REQUEST_CODE)
     }
 
-
-    private fun setReminder(task: Task) {
+    private fun initiateReminder(task: Task) {
         val intent = Intent(this, ReminderActivity::class.java)
         intent.putExtra(SimpliiConstants.KEY_TASK_TITLE, task.title)
         intent.putExtra(SimpliiConstants.KEY_TASK_ID, task.id)
         startActivityForResult(intent, SimpliiConstants.SET_REMINDER_REQUEST_CODE)
     }
 
-
-    private fun showReminders() {
+    private fun displayReminders() {
         val intent = Intent(this, ReminderListActivity::class.java)
         startActivityForResult(intent, SimpliiConstants.SHOW_REMINDERS)
-
     }
 
-    private fun openContextTodos() {
+    private fun navigateToContextTodos() {
         val intent = Intent(this, ContextTodo::class.java)
         startActivityForResult(intent, SimpliiConstants.CONTEXT_TODO_REQUEST_CODE)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             SimpliiConstants.CREATE_TASK_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    val newTask = Task(
+                    val task = Task(
                         title = data.getStringExtra(SimpliiConstants.KEY_TASK_TITLE),
                         status = data.getIntExtra(SimpliiConstants.KEY_TASK_STATUS, -1),
                         hours = data.getIntExtra(SimpliiConstants.KEY_TASK_HOURS, -1),
-                        startDate = Date(
-                            data.getLongExtra(
-                                SimpliiConstants.KEY_TASK_START_DATE,
-                                -1L
-                            )
-                        ),
-                        dueDate = Date(
-                            data.getLongExtra(
-                                SimpliiConstants.KEY_TASK_END_DATE,
-                                -1L
-                            )
-                        ), category = data.getIntExtra(SimpliiConstants.KEY_TASK_CATEGORY, -1)
+                        startDate = Date(data.getLongExtra(SimpliiConstants.KEY_TASK_START_DATE, -1L)),
+                        dueDate = Date(data.getLongExtra(SimpliiConstants.KEY_TASK_END_DATE, -1L)),
+                        category = data.getIntExtra(SimpliiConstants.KEY_TASK_CATEGORY, -1)
                     )
 
-                    APIHelper.addTask(newTask)
+                    APIHelper.addTask(task)
 
-                    when (newTask.status) {
-                        TASK_STATUS_TODO -> {
-                            todoItems.add(newTask)
-                        }
-
-                        TASK_STATUS_IN_PROGRESS -> {
-                            inProgressItems.add(newTask)
-                        }
-
-                        else -> {
-                            doneItems.add(newTask)
-                        }
+                    when (task.status) {
+                        TASK_STATUS_TODO -> todoTasks.add(task)
+                        TASK_STATUS_IN_PROGRESS -> ongoingTasks.add(task)
+                        else -> completedTasks.add(task)
                     }
-
                 }
             }
 
             SimpliiConstants.SET_REMINDER_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
+                    
 
+                
+                    
                 }
             }
 
             SimpliiConstants.CONTEXT_TODO_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     lifecycleScope.launch {
-                        fetchTasks()
+                        loadTasks()
                     }
                 }
             }
-
         }
     }
 
-    suspend fun fetchTasks() {
+    suspend fun loadTasks() {
         val tasks = APIHelper.getTasks()
-        todoItems.clear()
-        inProgressItems.clear()
-        doneItems.clear()
+        todoTasks.clear()
+        ongoingTasks.clear()
+        completedTasks.clear()
         tasks.forEach {
             when (it.status) {
-                SimpliiConstants.TaskStatus.TODO -> {
-                    todoItems.add(it)
-                }
-
-                SimpliiConstants.TaskStatus.IN_PROGRESS -> {
-                    inProgressItems.add(it)
-                }
-
-                else -> {
-                    doneItems.add(it)
-                }
+                SimpliiConstants.TaskStatus.TODO -> todoTasks.add(it)
+                SimpliiConstants.TaskStatus.IN_PROGRESS -> ongoingTasks.add(it)
+                else -> completedTasks.add(it)
             }
         }
     }

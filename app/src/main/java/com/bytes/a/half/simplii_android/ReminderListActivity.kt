@@ -10,18 +10,23 @@ import com.bytes.a.half.simplii_android.models.Reminder
 
 class ReminderListActivity : AppCompatActivity() {
 
-    private val reminderList: MutableList<Reminder> = mutableStateListOf()
+    private val reminderList = mutableStateListOf<Reminder>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LaunchedEffect(Unit) {
                 val reminders = APIHelper.getReminders()
-                reminderList.clear()
-                reminderList.addAll(reminders)
+                reminderList.apply {
+                    clear()
+                    addAll(reminders)
+                }
             }
             ReminderListScreen(reminders = reminderList) {
                 finish()
             }
         }
+        
     }
 }
