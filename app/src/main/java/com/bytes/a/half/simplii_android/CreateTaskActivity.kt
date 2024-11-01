@@ -19,17 +19,20 @@ class CreateTaskActivity : AppCompatActivity() {
         setContent {
             CreateTaskScreen(onClose = {
                 finish()
-            }) {
-                val intent = Intent()
-                intent.putExtra(KEY_TASK_TITLE, it.title)
-                intent.putExtra(KEY_TASK_START_DATE, it.startDate.time)
-                intent.putExtra(KEY_TASK_END_DATE, it.dueDate.time)
-                intent.putExtra(KEY_TASK_STATUS, it.status)
-                intent.putExtra(KEY_TASK_CATEGORY, it.category)
-                intent.putExtra(KEY_TASK_HOURS, it.hours)
+            }) { taskData ->
+                val intent = Intent().apply {
+                    putExtra(KEY_TASK_TITLE, taskData.title)
+                    putExtra(KEY_TASK_START_DATE, taskData.startDate.time)
+                    putExtra(KEY_TASK_END_DATE, taskData.dueDate.time)
+                    putExtra(KEY_TASK_STATUS, taskData.status)
+                    putExtra(KEY_TASK_CATEGORY, taskData.category)
+                    putExtra(KEY_TASK_HOURS, taskData.hours)
+                }
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
+
         }
     }
+    
 }

@@ -15,14 +15,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : ComponentActivity() {
-    lateinit var auth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
         setContent {
             MaterialTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -30,29 +29,27 @@ class SignUpActivity : ComponentActivity() {
                     SignupComposable(this, onSignUp = { email, password ->
                         signUp(email, password)
                     })
-
                 }
             }
         }
     }
 
-    fun signUp(email: String, password: String) {
+    private fun signUp(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(AuthenticationActivity.TAG, "createUserWithEmail:success")
+
+                    Log.d(AuthenticationActivity.TAG, "User creation successful")
                     val user = auth.currentUser
-                    startMainActivity()
+                    navigateToMainActivity()
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(AuthenticationActivity.TAG, "createUserWithEmail:failure", task.exception)
+                    Log.w(AuthenticationActivity.TAG, "User creation failed", task.exception)
                     showToast(task.exception?.message ?: "")
                 }
             }
     }
 
-    private fun startMainActivity() {
+    private fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

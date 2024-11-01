@@ -106,6 +106,14 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
  ### Welcome Email 
 <p> Once your register for Simplii, you get a welcome email from us appreciating your interest in using our website and welcoming you onboard. </p>
 <p align="center"><img width="700" src="./assets/welcome email.png"></p>
+
+### Email Verfication using Regex
+<p>Check if the Email is valid or not.</p>
+
+### OTP verification
+<p>OTP is sent to the email ID of the User trying to login and it is verified.</p>
+<p align="center"><img width="700" src="./assets/OTP.png"></p>
+<p align="center"><img width="700" src="assets/otp1.jpg"></p>
  
 ### User Interface Login 
 <p> Once you create an account, you can login to the website using your credentials </p>
@@ -266,10 +274,10 @@ https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/bb179a18-e63e-47b
    ## Team Members
    
   <ul style="list-style-type:  '- ' ; padding: 0;">
-  <li>Chandana Mallu (cmallu)</li>
-  <li>Saikrishna Rajaraman (srajara4)</li>
-  <li>Sidharth Anand (sanand8)</li>
-  <li>Tripurashree Mysore Manjunatha (tmysore)</li>
+  <li>Tanay shah (Tshah6)</li>
+  <li>Aayush Brahmbhatt (Abrahmb)</li>
+  <li>Naisarg shah(Nshah29)</li>
+  
 </ul>
 
   ## Contribution

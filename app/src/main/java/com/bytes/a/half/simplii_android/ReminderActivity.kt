@@ -11,9 +11,13 @@ class ReminderActivity : AppCompatActivity() {
         val taskTitle = intent.getStringExtra(SimpliiConstants.KEY_TASK_TITLE) ?: ""
         val taskId = intent.getStringExtra(SimpliiConstants.KEY_TASK_ID) ?: ""
         setContent {
-            ReminderScreen(taskId = taskId, taskTitle = taskTitle, onClose = { finish() }) { reminder ->
+            ReminderScreen(
+                taskId = taskId, 
+                taskTitle = taskTitle, 
+                onClose = { finish() }
+            ) { reminder ->
                 APIHelper.addReminder(reminder)
-                SimpliiUtils.scheduleReminder(this,reminder)
+                SimpliiUtils.scheduleReminder(this, reminder)
                 finish()
             }
         }
