@@ -1,4 +1,4 @@
-# Contributing to Simplii 4.0!!
+# Contributing to Simplii 5.0!!
 <h3>Hello!👋</h3>
 
 
@@ -74,7 +74,7 @@ Everyone participating in this project needs to abide by the aPAS - A Personal A
 
   - Give a detailed description about the limitations of current code.
 
-  - Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
+  - Use the imperative mood ("Move cursor to..." not "Moves cursor to...").
 
   - Limit the first line to 72 characters or less
 
