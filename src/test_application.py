@@ -136,3 +136,44 @@ def test_delete_task(client):
     })
     response = client.post('/deleteTask', data={'task': 'Task to Delete', 'status': 'To-Do', 'category': 'Work'})
     assert response.data == b'Success'
+
+def test_chatbot_valid_input(client, mocker):
+    mock_response = mocker.Mock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {
+        'candidates': [{'content': {'parts': [{'text': 'Sample response from chatbot'}]}}]
+    }
+    mocker.patch('requests.post', return_value=mock_response)
+
+    response = client.post('/chatbot', data={'user_input': 'What is AI?'})
+    assert response.status_code == 200
+    assert b'Sample response from chatbot' in response.data
+
+def test_chatbot_empty_input(client):
+    response = client.post('/chatbot', data={'user_input': ''})
+    assert b'Failed to fetch response from Gemini API.' not in response.data
+    assert response.status_code == 200  # Should still return the chatbot HTML
+
+def test_chatbot_error_from_api(client, mocker):
+    mock_response = mocker.Mock()
+    mock_response.status_code = 500
+    mocker.patch('requests.post', return_value=mock_response)
+
+    response = client.post('/chatbot', data={'user_input': 'Explain AI ethics'})
+    assert response.status_code == 500
+    assert b'Failed to fetch response from Gemini API.' in response.data
+
+def test_chatbot_invalid_method(client):
+    # Test GET request to chatbot instead of POST
+    response = client.get('/chatbot')
+    assert response.status_code == 200  # Should return the chatbot HTML page for GET
+
+def test_chatbot_missing_key(client, mocker):
+    mock_response = mocker.Mock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {}
+    mocker.patch('requests.post', return_value=mock_response)
+
+    response = client.post('/chatbot', data={'user_input': 'What is deep learning?'})
+    assert response.status_code == 500  # Should return a server error if the API response is missing data
+    assert b'Failed to fetch response from Gemini API.' in response.data
