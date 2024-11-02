@@ -293,7 +293,7 @@ https://github.com/SaikrishnaRajaraman/Simplii/assets/88961569/bb179a18-e63e-47b
 
   ## License
   
-  This project is licensed under the MIT License
+  This project is licensed under the MIT License.
   
                                                                                                                                                    
                                                                                                                                                    
