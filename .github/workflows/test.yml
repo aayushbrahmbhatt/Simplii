@@ -52,4 +52,4 @@ jobs:
       - name: Run Tests
         env:
           MONGO_URI: mongodb://localhost:27017/simplii_test
-        run: pytest src/test_application.py --maxfail=1 --disable-warnings
+        run: pytest ./test_application.py --maxfail=1 --disable-warnings
