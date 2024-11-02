@@ -135,6 +135,65 @@ class MockApplicationTestCase(unittest.TestCase):
         response = mock_test_client().get('/recommend')
         self.assertEqual(response.status_code, 200)
 
+    @patch('flask.Flask.test_client')
+    def test_edit_profile(self, mock_test_client):
+        mock_test_client().post.return_value.status_code = 200
+        response = mock_test_client().post('/editProfile', data={'bio': 'Updated bio'})
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_change_password(self, mock_test_client):
+        mock_test_client().post.return_value.status_code = 200
+        response = mock_test_client().post('/changePassword', data={'password': 'newpassword'})
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_notifications_page(self, mock_test_client):
+        mock_test_client().get.return_value.status_code = 200
+        response = mock_test_client().get('/notifications')
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_search_function(self, mock_test_client):
+        mock_test_client().get.return_value.status_code = 200
+        response = mock_test_client().get('/search', query_string={'query': 'test'})
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_task_details_page(self, mock_test_client):
+        mock_test_client().get.return_value.status_code = 200
+        response = mock_test_client().get('/task/1')
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_submit_feedback(self, mock_test_client):
+        mock_test_client().post.return_value.status_code = 200
+        response = mock_test_client().post('/feedback', data={'message': 'Great app!'})
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_task_deletion(self, mock_test_client):
+        mock_test_client().post.return_value.status_code = 200
+        response = mock_test_client().post('/delete_task', data={'task_id': '123'})
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_favorites_page(self, mock_test_client):
+        mock_test_client().get.return_value.status_code = 200
+        response = mock_test_client().get('/favorites')
+        self.assertEqual(response.status_code, 200)
+
+    @patch('flask.Flask.test_client')
+    def test_save_draft(self, mock_test_client):
+        mock_test_client().post.return_value.status_code = 201
+        response = mock_test_client().post('/saveDraft', data={'content': 'Draft content'})
+        self.assertEqual(response.status_code, 201)
+
+    @patch('flask.Flask.test_client')
+    def test_get_drafts(self, mock_test_client):
+        mock_test_client().get.return_value.status_code = 200
+        response = mock_test_client().get('/drafts')
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
