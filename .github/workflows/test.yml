@@ -47,9 +47,9 @@ jobs:
           pip install pytest-flask
 
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
 
       - name: Run Tests
         env:
           MONGO_URI: mongodb://localhost:27017/simplii_test
-        run: pytest test_application.py --maxfail=1 --disable-warnings
+        run: pytest src/test_application.py --maxfail=1 --disable-warnings

@@ -7,10 +7,10 @@ from flask import session
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
-    app.config['MONGO_URI'] = 'mongodb://localhost:27017/simplii_test'  # Separate test database
+    app.config['MONGO_URI'] = 'mongodb://localhost:27017/simplii_test'  
     with app.test_client() as client:
         with app.app_context():
-            mongo.db.users.drop()  # Clean up the database before each test
+            mongo.db.users.drop()  
             mongo.db.tasks.drop()
         yield client
 
