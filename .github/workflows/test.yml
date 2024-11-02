@@ -37,7 +37,7 @@ jobs:
         pip install schedule
         pip install itsdangerous
         pip install wtforms
-        pip install bson
+        pip uninstall -y bson  # Ensure no conflict with pymongo's bson
 
     - name: Run tests
       run: |
