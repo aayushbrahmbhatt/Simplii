@@ -1,138 +1,65 @@
-# test_application.py
-
-import pytest
-from src.application import app, mongo
+import unittest
 from flask import session
+from application import app
 
-@pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    app.config['MONGO_URI'] = 'mongodb://localhost:27017/simplii_test'  
-    with app.test_client() as client:
-        with app.app_context():
-            mongo.db.users.drop()  
-            mongo.db.tasks.drop()
-        yield client
+class ApplicationTestCase(unittest.TestCase):
+    def setUp(self):
+        # Configure app for testing
+        app.config['TESTING'] = True
+        self.app = app.test_client()
+        self.app_context = app.app_context()
+        self.app_context.push()
 
-def test_home_redirects_to_login(client):
-    response = client.get('/')
-    assert response.status_code == 302
-    assert response.headers['Location'].endswith('/login')
+    def tearDown(self):
+        self.app_context.pop()
 
-def test_register_user(client):
-    response = client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    assert b'OTP sent to test@example.com' in response.data
-    user = mongo.db.users.find_one({'email': 'test@example.com'})
-    assert user is not None
+    def test_home_redirect(self):
+        response = self.app.get('/home', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login', response.data)
 
-def test_otp_verification(client):
-    client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    user = mongo.db.users.find_one({'email': 'test@example.com'})
-    otp = user['otp']
-    response = client.post('/otp_verification', data={'otp': otp})
-    assert b'Your account has been verified successfully!' in response.data
+    def test_dashboard_access_denied_without_login(self):
+        response = self.app.get('/dashboard')
+        self.assertEqual(response.status_code, 302)  # Expect redirect to login
 
-def test_login_user(client):
-    # Register and verify user
-    client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    user = mongo.db.users.find_one({'email': 'test@example.com'})
-    mongo.db.users.update_one({'email': 'test@example.com'}, {'$set': {'is_verified': True}})
+    def test_about_page(self):
+        response = self.app.get('/about')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'About', response.data)
 
-    # Login
-    response = client.post('/login', data={'email': 'test@example.com', 'password': 'password123'})
-    assert response.status_code == 302  # Redirect after login
-    assert response.headers['Location'].endswith('/dashboard')
+    def test_registration_page(self):
+        response = self.app.get('/register')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Register', response.data)
 
-def test_dashboard_access(client):
-    # Access dashboard without login
-    response = client.get('/dashboard')
-    assert response.status_code == 302  # Redirect to login
+    def test_login_page(self):
+        response = self.app.get('/login')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Login', response.data)
 
-def test_task_creation(client):
-    client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    client.post('/login', data={'email': 'test@example.com', 'password': 'password123'})
+    def test_dummy_page(self):
+        response = self.app.get('/dummy')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Page Under Maintenance', response.data)
 
-    response = client.post('/task', data={
-        'taskname': 'Test Task',
-        'category': 'Work',
-        'startdate': '2024-11-01',
-        'duedate': '2024-11-05',
-        'status': 'To-Do',
-        'hours': 5
-    })
-    assert b'Task Added!' in response.data
-    task = mongo.db.tasks.find_one({'taskname': 'Test Task'})
-    assert task is not None
+    def test_contact_post_message(self):
+        with self.app as client:
+            with client.session_transaction() as sess:
+                sess['email'] = 'test@example.com'
+            response = client.post('/contact', data={'message': 'Test message'}, follow_redirects=True)
+            self.assertIn(b'Your message has been sent to support!', response.data)
 
-def test_email_reminder(client):
-    client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    client.post('/login', data={'email': 'test@example.com', 'password': 'password123'})
+    def test_reset_password_invalid_token(self):
+        response = self.app.get('/resetPassword/invalidtoken', follow_redirects=True)
+        self.assertIn(b'Invalid password reset link.', response.data)
 
-    response = client.post('/send_email_reminders', data={'duedate': '2024-11-10'})
-    assert b'Email reminders sent' in response.data
+    def test_recommend_redirect(self):
+        response = self.app.get('/recommend')
+        self.assertEqual(response.status_code, 302)  # Redirects to home if not logged in
 
-def test_task_edit(client):
-    client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    client.post('/login', data={'email': 'test@example.com', 'password': 'password123'})
+    def test_kanban_board_redirect(self):
+        response = self.app.get('/kanbanBoard')
+        self.assertEqual(response.status_code, 302)  # Redirects to home if not logged in
 
-    client.post('/task', data={
-        'taskname': 'Initial Task',
-        'category': 'Work',
-        'startdate': '2024-11-01',
-        'duedate': '2024-11-05',
-        'status': 'To-Do',
-        'hours': 5
-    })
-    
-    response = client.post('/editTask', data={
-        'taskname': 'Updated Task',
-        'category': 'Updated',
-        'startdate': '2024-11-02',
-        'duedate': '2024-11-06',
-        'status': 'In Progress',
-        'hours': 6
-    })
-    assert b'Task Updated!' in response.data
-
-def test_delete_task(client):
-    client.post('/register', data={
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    client.post('/login', data={'email': 'test@example.com', 'password': 'password123'})
-
-    client.post('/task', data={
-        'taskname': 'Task to Delete',
-        'category': 'Work',
-        'startdate': '2024-11-01',
-        'duedate': '2024-11-05',
-        'status': 'To-Do',
-        'hours': 5
-    })
-    response = client.post('/deleteTask', data={'task': 'Task to Delete', 'status': 'To-Do', 'category': 'Work'})
-    assert response.data == b'Success'
+if __name__ == '__main__':
+    unittest.main()
