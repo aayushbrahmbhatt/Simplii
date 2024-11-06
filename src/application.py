@@ -606,6 +606,65 @@ def profile():
 #     return render_template('register.html', title='Register', form=form)
 
 
+# @app.route("/register", methods=['GET', 'POST'])
+# def register():
+#     if not session.get('email'):
+#         form = RegistrationForm()
+#         if form.validate_on_submit():
+#             if request.method == 'POST':
+#                 username = request.form.get('username')
+#                 email = request.form.get('email')
+#                 password = request.form.get('password')
+
+#                 otp = random.randint(100000, 999999)
+                
+#                 mongo.db.users.insert_one({
+#                     'name': username,
+#                     'email': email,
+#                     'pwd': bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()),
+#                     'tasksList': [],
+#                     'otp': otp,  
+#                     'is_verified': False  
+#                 })
+
+#                 msg = Message('Your OTP for Simplii Registration', sender='dummysinghhh@gmail.com', recipients=[email])
+#                 msg.body = f"Hello {username},\n\nYour OTP for registration is: {otp}\n\nPlease enter this code to complete your registration.\n\nThank you,\nThe Simplii Team"
+#                 mail.send(msg)
+#                 print("OTP sent!")
+
+#                 session['email'] = email
+#                 flash(f'OTP sent to {email}. Please verify your email to complete registration.', 'info')
+                
+#                 return redirect(url_for('otp_verification'))
+#     else:
+#         return redirect(url_for('home'))
+#     return render_template('register.html', title='Register', form=form)
+
+# @app.route("/otp_verification", methods=['GET', 'POST'])
+# def otp_verification():
+#     # Redirect to login if no email in session
+#     if 'email' not in session:
+#         return redirect(url_for('login'))
+
+#     # Initialize the form
+#     form = OTPForm()
+
+#     # Validate form submission
+#     if form.validate_on_submit():  # Check if form was submitted and is valid
+#         otp_entered = form.otp.data
+#         user = mongo.db.users.find_one({'email': session['email']})
+
+#         if user and user['otp'] == int(otp_entered):  # OTP matches
+#             mongo.db.users.update_one({'email': session['email']}, {'$set': {'is_verified': True, 'otp': None}})
+#             session['user'] = user['name']
+#             flash('Your account has been verified successfully!', 'success')
+#             return redirect(url_for('dashboard'))
+#         else:
+#             flash('Invalid OTP. Please try again.', 'danger')
+
+#     # Render the template with the form
+#     return render_template('otp_verification.html', title='OTP Verification', form=form)
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if not session.get('email'):
@@ -618,21 +677,24 @@ def register():
 
                 otp = random.randint(100000, 999999)
                 
+                # Save user details in MongoDB without OTP
                 mongo.db.users.insert_one({
                     'name': username,
                     'email': email,
                     'pwd': bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()),
                     'tasksList': [],
-                    'otp': otp,  
                     'is_verified': False  
                 })
 
+                # Send OTP email
                 msg = Message('Your OTP for Simplii Registration', sender='dummysinghhh@gmail.com', recipients=[email])
                 msg.body = f"Hello {username},\n\nYour OTP for registration is: {otp}\n\nPlease enter this code to complete your registration.\n\nThank you,\nThe Simplii Team"
                 mail.send(msg)
                 print("OTP sent!")
 
+                # Store OTP in session
                 session['email'] = email
+                session['otp'] = otp  # Store OTP in session
                 flash(f'OTP sent to {email}. Please verify your email to complete registration.', 'info')
                 
                 return redirect(url_for('otp_verification'))
@@ -652,11 +714,13 @@ def otp_verification():
     # Validate form submission
     if form.validate_on_submit():  # Check if form was submitted and is valid
         otp_entered = form.otp.data
-        user = mongo.db.users.find_one({'email': session['email']})
 
-        if user and user['otp'] == int(otp_entered):  # OTP matches
-            mongo.db.users.update_one({'email': session['email']}, {'$set': {'is_verified': True, 'otp': None}})
-            session['user'] = user['name']
+        # Retrieve OTP from session instead of MongoDB
+        if 'otp' in session and session['otp'] == int(otp_entered):  # OTP matches
+            # Update user as verified in MongoDB
+            mongo.db.users.update_one({'email': session['email']}, {'$set': {'is_verified': True}})
+            session.pop('otp')  # Clear OTP from session after successful verification
+            session['user'] = session['email']
             flash('Your account has been verified successfully!', 'success')
             return redirect(url_for('dashboard'))
         else:
@@ -664,6 +728,8 @@ def otp_verification():
 
     # Render the template with the form
     return render_template('otp_verification.html', title='OTP Verification', form=form)
+
+
 
 @app.route("/deleteTask", methods=['GET', 'POST'])
 def deleteTask():
