@@ -199,9 +199,9 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 
 ## Team Members
 
-- **Prateek Singamsetty** - Full Stack Developer
-- **Jane Doe** - UI/UX Designer
-- **John Smith** - Database Administrator
+- **Aayush Brahmbhatt** - abrahmb
+- **Tanay Shah** - tshah6
+- **Naisarg Shah** - nshah29
 
 ## Contribution
 
