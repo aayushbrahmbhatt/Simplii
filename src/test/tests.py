@@ -89,7 +89,43 @@ class BasicTestCase(unittest.TestCase):
         ans = self.app.get('/dashboard')
         self.assertEqual(ans.status_code, 200)
 
-    # Add more test cases for other routes
+    def test_toggle_theme(self):
+        """Test that the theme toggles between light and dark."""
+        
+        # Simulate visiting the page
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+        # Check the initial theme (should be light by default)
+        # Ensure that the theme stylesheet is the light theme (main.css)
+        self.assertIn('main.css', response.data.decode('utf-8'))
+
+        # Simulate clicking the toggle button to switch to dark theme
+        response = self.app.get('/toggle_theme')  # You might need to set this route to toggle theme
+
+        # Check that the theme switched (should now be dark theme)
+        # Check that the dark theme stylesheet (maindark.css) is now included
+        self.assertIn('maindark.css', response.data.decode('utf-8'))
+
+    def test_toggle_theme_persistence(self):
+        """Test that the theme persists between page reloads."""
+        
+        # Simulate visiting the page
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        
+        # Ensure the initial theme is light (main.css)
+        self.assertIn('main.css', response.data.decode('utf-8'))
+
+        # Simulate toggling to dark theme
+        response = self.app.get('/toggle_theme')  # This route should handle theme toggle
+        self.assertIn('maindark.css', response.data.decode('utf-8'))  # Check for dark theme CSS
+
+        # Reload the page and check if the theme persists
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('maindark.css', response.data.decode('utf-8'))  # Ensure dark theme persists
+
 
 if __name__ == '__main__':
     unittest.main()
