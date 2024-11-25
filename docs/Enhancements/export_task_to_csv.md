@@ -196,4 +196,24 @@ The Export to CSV functionality enhances productivity by allowing users to downl
 ![image](https://github.com/user-attachments/assets/dbab7bc2-6281-428c-8cb3-33e21c215d5f)
 
 
+
+# How to Export Tasks to CSV?
+
+* Open the "All Tasks" dashboard page in the application.
+
+* Review the tasks displayed in the table. Use the filtering options (status, category, display limit) to narrow down the tasks you want to export.
+
+* Click the Export to CSV button located in the top-right corner of the task table.
+
+* The system will generate a CSV file containing the visible tasks and prompt you to save or download it.
+
+* Save the file to your desired location on your computer.
+
+Example interaction:
+
+* User Action: Clicks on the "Export to CSV" button after applying filters.
+
+* Result: A file named tasks.csv is downloaded, containing the selected tasks' data.
+
+
 ---
