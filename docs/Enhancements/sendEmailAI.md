@@ -187,4 +187,29 @@ This feature allows users to receive a professionally generated schedule email d
 ![Screenshot (34)](https://github.com/user-attachments/assets/f9a15fd8-8e58-485e-83d0-33a6504a95f3)
 
 
+# How to Send an AI-Generated Email Schedule?
+* Log in to the application and ensure that your email is set in the session.
+
+* Navigate to the "All Tasks" page in the dashboard.
+
+
+* Click the Send Schedule button located in the top-right corner of the task table.
+
+
+* A modal will appear, showing a loading spinner and a message saying "Generating your personalized schedule...".
+
+
+* Wait for the confirmation message in the modal, which will indicate whether the email was successfully sent.
+
+
+* Check your registered email inbox for the AI-generated schedule, formatted based on your tasks.
+
+Example interaction:
+
+* User Action: Clicks the "Send Schedule" button.
+
+* System Response: A modal displays the email generation process, and upon completion, shows a confirmation message.
+
+* Result: The user receives a personalized email with tasks categorized into "Today," "This Week," and "This Month."
+
 
