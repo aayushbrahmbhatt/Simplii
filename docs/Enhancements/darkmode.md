@@ -171,5 +171,19 @@ Dark Theme Application
 ![image](https://github.com/user-attachments/assets/d5a84f30-4282-42fc-b7c4-9b69b12e27ad)
 
 
+# How to Enable Dark Mode?
+* Launch the application in your web browser (follow the instructions in the main README.md to set up and run the project).
+
+* Locate the dark mode toggle button, typically represented by a moon/sun icon or a switch at the top-right corner of the interface.
+
+* Click on the toggle button to switch between light mode and dark mode.
+
+* The theme will change immediately, and your preference may be saved for future sessions (depending on implementation).
+
+Example interaction:
+
+* User Action: Clicks on the dark mode toggle.
+* Result: The UI updates to a dark-themed color palette for better visibility in low-light conditions.
+
 
 ---
