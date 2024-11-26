@@ -12,6 +12,7 @@ import random
 import requests
 from flask import Flask, request, render_template, jsonify
 from openai import OpenAI
+import markdown2
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -37,6 +38,11 @@ from utils import format_gcal_date
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+import os
+from flask import jsonify
+import google.generativeai as genai
+from flask_mail import Mail, Message
+from datetime import datetime, timedelta
 
 class OTPForm(FlaskForm):
     otp = StringField('Enter OTP', validators=[DataRequired()])
@@ -62,7 +68,130 @@ serializer = URLSafeTimedSerializer(app.secret_key, salt='password-reset')
 
 scheduler = BackgroundScheduler()
 
-GEMINI_API_KEY = "AIzaSyAJksXpRxDQRV6iz_wW3Op95wlfoJjosYc"
+GEMINI_API_KEY = "AIzaSyCvSkPBAgEFnXLOhYIxkJthYZ8KemKENao"
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-pro')
+
+def generate_task_prompt(tasks):
+    today = datetime.now().date()
+    this_week_end = today + timedelta(days=(6-today.weekday()))
+    this_month_end = (today.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+    
+    today_tasks = []
+    week_tasks = []
+    month_tasks = []
+    
+    for task in tasks:
+        due_date = datetime.strptime(task['duedate'], '%Y-%m-%d').date()
+        if due_date == today:
+            today_tasks.append(task)
+        elif due_date <= this_week_end:
+            week_tasks.append(task)
+        elif due_date <= this_month_end:
+            month_tasks.append(task)
+
+    prompt =    f"""
+                As a professional task management assistant, create a concise, professional, and motivating email response for a user's task list. Use the following task data:
+
+                - **Today's Tasks ({len(today_tasks)}):** {', '.join(t['taskname'] for t in today_tasks) if today_tasks else 'None'}
+                - **This Week's Tasks ({len(week_tasks)}):** {', '.join(t['taskname'] for t in week_tasks) if week_tasks else 'None'}
+                - **This Month's Tasks ({len(month_tasks)}):** {', '.join(t['taskname'] for t in month_tasks) if month_tasks else 'None'}
+
+                Please ensure the email is structured and formatted as follows:
+
+                1. **A crisp and motivational introduction:** Greet the user warmly and set a positive tone for task management.
+                2. **Task Breakdown:** Provide a concise, well-structured breakdown of tasks by category (Today, This Week, This Month). If there are no tasks in a specific category, acknowledge this in a professional and encouraging way.
+                3. **Time Allocation & Priorities:** Recommend time allocation and priorities for tasks in each category (if applicable). Be specific and actionable.
+                4. **Work-Life Balance Tips:** Include short, practical tips to help the user maintain balance.
+                5. **Conclusion:** End on a motivating and uplifting note. If all tasks are completed, congratulate the user and encourage proactive planning for future tasks.
+                6. **Sign-Off:** Conclude the email with "Best regards, Simplii AI".
+
+                Formatting Requirements:
+                - Use a clear and professional email format with proper sections and spacing.
+                - Use bullet points or numbered lists where appropriate for better readability.
+                - Keep the tone formal yet encouraging.
+                - Ensure the email is concise, avoiding unnecessary verbosity.
+
+                Make sure to handle cases where there are no tasks across one or all categories, providing a meaningful and positive message in such scenarios. The email must remain polished and professional in every case.
+                """
+
+    return prompt
+
+def send_task_email(user_email, tasks):
+    try:
+        print("Here in send_task_email")
+        prompt = generate_task_prompt(tasks)
+        response = model.generate_content(prompt)
+        
+        # Convert Markdown to HTML
+        email_html_content = markdown2.markdown(response.text)
+
+        msg = Message(
+            'Your Personalized Task Schedule',
+            sender='dummysinghhh@gmail.com',
+            recipients=[user_email]
+        )
+        msg.html = email_html_content
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")
+        return False
+
+# Add this route to your Flask app
+@app.route('/send_task_email', methods=['POST'])
+def handle_email_request():
+    try:
+        # Log route access
+        app.logger.info("Route accessed: /send_task_email")
+        print("Starting email request handler")
+
+        # Get user email from session
+        user_email = session.get('email')
+        if not user_email:
+            app.logger.error("User email not found in session")
+            return jsonify({'error': 'User email not found'}), 400
+
+        # Get tasks from database
+        user_id = session.get('user_id')
+        tasks = get_user_tasks(user_id)  # Implement this function
+        
+        # Debug logging
+        print(f"Debug info - Email: {user_email}, UserId: {user_id}, Tasks: {tasks}")
+        
+        # Commented out email sending logic
+        success = send_task_email(user_email, tasks)
+        if success:
+            app.logger.info(f"Email sent successfully to {user_email}")
+            return jsonify({'message': 'Email sent successfully'}), 200
+        else:
+            app.logger.error(f"Failed to send email to {user_email}")
+            return jsonify({'error': 'Failed to send email'}), 500
+
+    except Exception as e:
+        app.logger.error(f"Error in handle_email_request: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+def get_user_tasks(user_str_id) :
+    user_id = ObjectId(user_str_id)
+    current_date = datetime.now().date()
+
+    # Calculate the date 7 days from now
+    thirty_days_later = current_date + timedelta(days=31)
+
+    print(f"Debug info - UserId: {user_id}, Current Date: {current_date}, Thirty Days Later: {thirty_days_later.strftime('%Y-%m-%d')}")
+
+    relevant_tasks = mongo.db.tasks.find({
+                'user_id': user_id,
+                'duedate': {
+                    # '$gte': current_date.strftime('%Y-%m-%d'),
+                    '$lte': thirty_days_later.strftime('%Y-%m-%d')
+                }
+            }).sort('duedate', 1)
+
+    tasksListContent = list(relevant_tasks)
+    return tasksListContent
+
 
 def fetch_tasks():
     print("fetch_tasks called")
@@ -121,6 +250,7 @@ def home():
     # Output: Out function will redirect to the login page
     # ##########################
     if session.get('email'):
+
         return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('login'))
@@ -685,6 +815,7 @@ def register():
                     'tasksList': [],
                     'is_verified': False  
                 })
+                auth.create_user_with_email_and_password(email, password)
 
                 # Send OTP email
                 msg = Message('Your OTP for Simplii Registration', sender='dummysinghhh@gmail.com', recipients=[email])
@@ -1080,7 +1211,8 @@ def login():
                 session['name'] = temp['name']
                 session['user_id'] = str(temp['_id'])
                 return redirect(url_for('dashboard'))
-            except:
+            except Exception as e:
+                print(f"Error during login: {e}")
                 flash(
                     'Login Unsuccessful. Please check username and password',
                     'danger')

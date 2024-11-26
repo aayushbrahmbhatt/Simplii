@@ -1,29 +1,29 @@
 
 # Simplii - Task Management Web and Android Application
-[![DOI](https://zenodo.org/badge/720901435.svg)](https://zenodo.org/doi/10.5281/zenodo.10212287)
+[![DOI](https://zenodo.org/badge/720901435.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Github](https://img.shields.io/badge/language-python-red.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Code Coverage](https://github.com/prateeksingamsetty/Simplii/blob/main/src/coverage.svg)
-[![Python Style Checker](https://github.com/prateeksingamsetty/Simplii/actions/workflows/style_checker.yml/badge.svg)](https://github.com/prateeksingamsetty/Simplii/actions/workflows/style_checker.yml)
-[![Close as a feature](https://github.com/prateeksingamsetty/Simplii/actions/workflows/close_as_a_feature.yml/badge.svg)](https://github.com/prateeksingamsetty/Simplii/actions/workflows/close_as_a_feature.yml)
-[![GitHub version](https://img.shields.io/github/v/release/prateeksingamsetty/Simplii)](https://github.com/prateeksingamsetty/Simplii/releases)
-[![Lint Python](https://github.com/prateeksingamsetty/Simplii/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/prateeksingamsetty/Simplii/actions/workflows/syntax_checker.yml)
+![Code Coverage]()
+[![Python Style Checker](https://github.com/CSC510SEFALL2024/Simplii/actions/workflows/style_checker.yml/badge.svg)](https://github.com/CSC510SEFALL2024/Simplii/actions/workflows/style_checker.yml)
+[![Close as a feature](https://github.com/CSC510SEFALL2024/Simplii/actions/workflows/close_as_a_feature.yml/badge.svg)](https://github.com/CSC510SEFALL2024/Simplii/actions/workflows/close_as_a_feature.yml)
+[![GitHub version](https://img.shields.io/github/v/release/CSC510SEFALL2024/Simplii)](https://github.com/prateeksingamsetty/Simplii/releases)
+[![Lint Python](https://github.com/CSC510SEFALL2024/Simplii/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/CSC510SEFALL2024/Simplii/actions/workflows/syntax_checker.yml)
 
-<a href="https://github.com/prateeksingamsetty/Simplii/forks" target="blank">
-<img src="https://img.shields.io/github/forks/prateeksingamsetty/Simplii?style=flat-square" alt="Simplii forks"/>
+<a href="https://github.com/CSC510SEFALL2024/Simplii/forks" target="blank">
+<img src="https://img.shields.io/github/forks/CSC510SEFALL2024/Simplii?style=flat-square" alt="Simplii forks"/>
 </a>
-<a href="https://github.com/prateeksingamsetty/Simplii/stargazers" target="blank">
-<img src="https://img.shields.io/github/stars/prateeksingamsetty/Simplii?style=flat-square" alt="Simplii stars"/>
+<a href="https://github.com/CSC510SEFALL2024/Simplii/stargazers" target="blank">
+<img src="https://img.shields.io/github/stars/CSC510SEFALL2024/Simplii?style=flat-square" alt="Simplii stars"/>
 </a>
-<a href="https://github.com/prateeksingamsetty/Simplii/issues" target="blank">
-<img src="https://img.shields.io/github/issues/prateeksingamsetty/Simplii?style=flat-square" alt="Simplii issues"/>
+<a href="https://github.com/CSC510SEFALL2024/Simplii/issues" target="blank">
+<img src="https://img.shields.io/github/issues/CSC510SEFALL2024/Simplii?style=flat-square" alt="Simplii issues"/>
 </a>
-<a href="https://github.com/prateeksingamsetty/Simplii/issues?q=is%3Aissue+is%3Aclosed" target="blank">
-<img src="https://img.shields.io/github/issues-closed/prateeksingamsetty/Simplii" alt="Simplii issues closed"/>
+<a href="https://github.com/CSC510SEFALL2024/Simplii/issues?q=is%3Aissue+is%3Aclosed" target="blank">
+<img src="https://img.shields.io/github/issues-closed/CSC510SEFALL2024/Simplii" alt="Simplii issues closed"/>
 </a>
-<a href="https://github.com/prateeksingamsetty/Simplii/pulls" target="blank">
-<img src="https://img.shields.io/github/issues-pr/prateeksingamsetty/Simplii?style=flat-square" alt="Simplii pull-requests"/>
+<a href="https://github.com/CSC510SEFALL2024/Simplii/pulls" target="blank">
+<img src="https://img.shields.io/github/issues-pr/CSC510SEFALL2024/Simplii?style=flat-square" alt="Simplii pull-requests"/>
 </a>
 
 # Simplii 5.0
@@ -34,11 +34,8 @@ Simplii is a versatile task management application available on both web and And
 
 # App Hosting
 
-App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
-
 ## Link to Demonstration Video of the Project: 
 
-<a href="https://www.youtube.com/watch?v=PZtG0tiJfAg" target="blank">https://www.youtube.com/watch?v=PZtG0tiJfAg</a>
 
 # Table of Contents  
 
@@ -98,7 +95,7 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 - Android Studio
 - Firebase
 
-## Enhancements
+## Features
 
 ### User Interface Register 
 <p> You can create your own account and register on the website. You can store your data and can access the data whenever required. </p>
@@ -159,7 +156,41 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 
 ### Reminder Schedule
 <p> Reminders are scheduled to notify the user when a task deadline is approaching. Users can schedule reminders from the dashboard. </p>
-<p align="center"><img width="700" src="./assets/reminder schedule.png"></p>
+<!-- <p align="center"><img width="700" src="./assets/reminder schedule.png"></p> -->
+
+## Enhancements
+### Dark Mode
+<p> Added persistant dark and light themes to the application.  
+  
+* _Light Theme Application SS:_
+  
+![Screenshot 2024-11-25 152147](https://github.com/user-attachments/assets/b405f266-18fd-49e3-b353-3a6a881baf2d)
+
+
+* _Dark Theme Application SS:_
+
+![Screenshot 2024-11-25 152235](https://github.com/user-attachments/assets/626f7c69-f219-452a-a11d-abab0883f2a3)
+
+### AI Email Schedule and Tasks
+
+* Loading animation while sending email.
+
+![Screenshot (32)](https://github.com/user-attachments/assets/e6a4888b-8a15-488a-b532-a9b6f715ee20)
+
+* Acknowledgement for email send.
+
+![Screenshot (33)](https://github.com/user-attachments/assets/dc30ee13-4915-409d-953a-65ad7f9e93cd)
+
+* Example email synthesized using AI
+
+![Screenshot (34)](https://github.com/user-attachments/assets/5621b87f-c94f-4436-8870-d21a4916a904)
+
+### Export tasks to .csv file
+
+* Users can export current tasks to a csv file and download
+
+![Screenshot 2024-11-25 153519](https://github.com/user-attachments/assets/adfe8584-7701-48d9-ae1a-9a72b00d23cc)
+
 
 ### MongoDB Users Table
 <p> Users details are saved in the database. User's data is protected.</p>
@@ -179,29 +210,24 @@ App hosted at [152.7.179.58:8080](http://152.7.176.58:8080/)
 2. Install the necessary dependencies: `pip install -r requirements.txt`
 3. Run the application: `python app.py`
 
-## Source Code
-
-- The source code for this project is available [here](https://github.com/prateeksingamsetty/Simplii/).
-
 ## Delta
 
-- **Enhanced User Interface**: Clean and simple UI for easy navigation.
-- **Multiple Task Categories**: Manage tasks in different categories.
-- **Task Status Visualization**: Visualize task status with a Kanban board.
-- **Scheduled Reminders**: Get reminders for deadlines.
+- **Added Dark Mode**: Added persisting dark mode to the application. 
+- **Export Task to .csv**: Users can export their tasks to a csv file
+- **AI Schedule Email**: Receive email from AI to get a brief of your tasks and a schedule. 
 
 ## Future Scope
 
 1. Add AI-driven task prioritization.
 2. Integrate with other calendars like Google Calendar.
-3. Add dark mode.
-4. Improve notifications.
+3. Add dark mode for the mobile application.
+4. Improve notifications for the mobile application.
 
 ## Team Members
 
-- **Aayush Brahmbhatt** - abrahmb
-- **Tanay Shah** - tshah6
-- **Naisarg Shah** - nshah29
+- **Anurag Gorkar** - AnuragGorkar
+- **Aryan Iguva** - aryansharma2k2
+- **Harsh Vora** - harshvora7
 
 ## Contribution
 

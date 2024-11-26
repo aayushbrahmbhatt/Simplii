@@ -1,15 +1,14 @@
 import pyrebase
 
-firebase_config = {
-    "apiKey": "AIzaSyDtmIIfDSz13PXA-QpgsWjJflxPjFCd_4g",
-    "authDomain": "simplii-7eeb5.firebaseapp.com",
-    "projectId": "simplii-7eeb5",
-    "storageBucket": "simplii-7eeb5.appspot.com",
-    "messagingSenderId": "272974507960",
-    "appId": "1:272974507960:web:8202797d0a23c081f4294d",
-    "measurementId": "G-H9F327ZD63",
-    "databaseURL": ""
+firebaseConfig = {
+  "apiKey": "AIzaSyD-EgQSVpcSCbxSt9z4VxqJEQJ9zE_MrE4",
+  "authDomain": "simpliise.firebaseapp.com",
+  "projectId": "simpliise",
+  "storageBucket": "simpliise.firebasestorage.app",
+  "messagingSenderId": "76864127343",
+  "appId": "1:76864127343:web:caeafff4db6f8e545b689a",
+  "measurementId": "G-VQL4639R2E",
+  "databaseURL": ""
 }
-
-firebase = pyrebase.initialize_app(firebase_config)
+firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
