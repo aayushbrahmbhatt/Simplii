@@ -685,6 +685,7 @@ def register():
                     'tasksList': [],
                     'is_verified': False  
                 })
+                auth.create_user_with_email_and_password(email, password)
 
                 # Send OTP email
                 msg = Message('Your OTP for Simplii Registration', sender='dummysinghhh@gmail.com', recipients=[email])
@@ -1080,7 +1081,8 @@ def login():
                 session['name'] = temp['name']
                 session['user_id'] = str(temp['_id'])
                 return redirect(url_for('dashboard'))
-            except:
+            except Exception as e:
+                print(f"Error during login: {e}")
                 flash(
                     'Login Unsuccessful. Please check username and password',
                     'danger')

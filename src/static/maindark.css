@@ -1,0 +1,167 @@
+.nav-color {
+    background: #975df0;  /* Darker version of original purple */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #867d96;  /* Kept the same for contrast */
+}
+
+body {
+    background: #1a1a1a;  /* Dark background */
+    color: #e0e0e0;  /* Light text for contrast */
+    margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;  /* Bright white for headers */
+}
+
+.bg-steel {
+    background-color: #364551;  /* Darker version of the original steel blue */
+}
+
+.site-header .navbar-nav .nav-link {
+    color: #cbd5db;  /* Kept the same for consistency */
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;  /* Kept white for hover state */
+}
+
+.site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+}
+
+.content-section {
+    background: #2d2d2d;  /* Dark gray for content sections */
+    padding: 10px 20px;
+    border: 1px solid #404040;  /* Darker border */
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.account-heading {
+    font-size: 2.5rem;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.side-bar {
+    margin-top: 20px;
+    color: #b3b1b6;  /* Lighter version of original gray */
+}
+
+.side-bar-li {
+    margin-bottom: 10px;
+}
+
+.side-bar-link {
+    color: #b3b1b6;  /* Matching sidebar color */
+}
+
+.vl {
+    border-left: 1px solid #404040;  /* Darker border */
+    border-radius: 0.2px;
+    height: 100%;
+    position: absolute;
+    left: 20%;
+    margin-left: -3px;
+    top: 0;
+}
+
+details {
+    border: 0.5px solid #555;  /* Darker border */
+    border-radius: 4px;
+    padding: .5em .5em 0;
+    background-color: #2d2d2d;  /* Dark background */
+}
+
+summary {
+    font-weight: bold;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+}
+
+details[open] {
+    padding: .5em;
+}
+
+details[open] summary {
+    margin-bottom: .5em;
+}
+
+.status-card {
+    margin: 20px;
+    background-color: #2d2d2d;  /* Dark card background */
+    border-radius: 2%;
+    padding-bottom: 10px;
+}
+
+.list-group-item {
+    background-color: #2d2d2d;  /* Dark background */
+}
+
+.card-icons {
+    font-size: 80px;
+    margin-top: 10px;
+    color: #e0e0e0;  /* Light color for icons */
+}
+
+.sidenav-right,
+.sidenav-left {
+    color: #e0e0e0;  /* Light text */
+    padding-top: 40pt;
+}
+
+.new-application-modal {
+    color: #e0e0e0;  /* Light text */
+}
+
+/* CSS Variables for theme colors */
+:root {
+    --theme-dark: #1a1a1a;
+    --theme-light: #2d2d2d;
+    --text-color: #e0e0e0;
+}
+
+.task-list {
+    border: 1px solid #404040;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.task-item {
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    cursor: grab;
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.list-group-item {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #555 !important;
+}
+
+#todo-list {
+    background-color: rgba(72, 141, 175, 0.8);
+}
+
+#in-progress-list {
+    background-color: rgba(189, 66, 66, 0.8);
+}
+
+#done-list {
+    background-color: rgba(60, 167, 60, 0.8);
+}
